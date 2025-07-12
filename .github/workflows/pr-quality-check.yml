@@ -1,0 +1,117 @@
+name: PR Quality Checks
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [staging, prod]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  size-label:
+    name: Size Labeler
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Calculate changed lines
+        id: changed-lines
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+
+          ADDED=$(git diff --shortstat "$BASE" "$HEAD" | grep -o '[0-9]\+ insertions' | grep -o '[0-9]\+' || echo 0)
+          DELETED=$(git diff --shortstat "$BASE" "$HEAD" | grep -o '[0-9]\+ deletions' | grep -o '[0-9]\+' || echo 0)
+
+          TOTAL_LINES=$((ADDED + DELETED))
+          echo "changed_lines=${TOTAL_LINES}" >> $GITHUB_OUTPUT
+          echo "Lines changed: $TOTAL_LINES"
+
+      - name: Apply size label
+        uses: actions/github-script@v7
+        env:
+          CHANGES: ${{ steps.changed-lines.outputs.changed_lines }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const changeCount = parseInt(process.env.CHANGES);
+            const size =
+              changeCount <= 9 ? 'XS' :
+              changeCount <= 49 ? 'S' :
+              changeCount <= 199 ? 'M' :
+              changeCount <= 499 ? 'L' : 'XL';
+
+            const labelName = `size-${size}`;
+            console.log(`Applying size label: ${labelName}`);
+
+            const issue_number = context.issue.number;
+
+            // Remove existing size labels
+            const existingLabels = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number
+            });
+
+            const sizeLabels = existingLabels.data.filter(label => label.name.startsWith('size-'));
+            for (const label of sizeLabels) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                name: label.name
+              });
+            }
+
+            // Create label if not exists
+            try {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: labelName,
+                color: '0e8a16',
+                description: `Size label for PR with ${changeCount} lines changed`
+              });
+            } catch (error) {
+              if (error.status !== 422) throw error;
+              console.log(`Label "${labelName}" already exists`);
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              labels: [labelName]
+            });
+
+  check-merge-commits:
+    name: Merge Commit Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Detect merge commits
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+
+          MERGE_COMMITS=$(git log --merges "$BASE".."$HEAD" --pretty=format:"%h")
+
+          if [ -n "$MERGE_COMMITS" ]; then
+            echo "::error::❌ PR contains merge commits. Please rebase instead of merging."
+            exit 1
+          else
+            echo "✅ No merge commits detected."
+          fi

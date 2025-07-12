@@ -54,6 +54,35 @@ jobs:
               }
             }
 
+            let changeCount = 0;
+            changedFiles.forEach(file => {
+              changeCount += file.additions + file.deletions;
+            });
+
+            const size = changeCount <= 9 ? 'XS' :
+              changeCount <= 49 ? 'S' :
+              changeCount <= 199 ? 'M' :
+              changeCount <= 499 ? 'L' : 'XL';
+            const sizeLabel = `size-${size}`;
+
+            const issue_number = context.payload.pull_request.number;
+            const prLabels = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number
+            });
+            const sizeLabels = prLabels.data.filter(label => label.name.startsWith('size-'));
+            for (const label of sizeLabels) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                name: label.name
+              });
+            }
+
+            labelsToApply.add(sizeLabel);
+
             const existingLabels = await github.paginate(
               github.rest.issues.listLabelsForRepo, {
                 owner: context.repo.owner,

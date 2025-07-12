@@ -5,11 +5,8 @@ interface College {
   name: string;
 }
 
-interface RegistrationState {
-  // Current step
-  step: number;
-  
-  // Form data
+interface Participant {
+  id: string;
   name: string;
   email: string;
   age: string;
@@ -20,6 +17,19 @@ interface RegistrationState {
   githubLink: string;
   linkedinLink: string;
   devfolioLink: string;
+}
+
+interface RegistrationState {
+  // Current step
+  step: number;
+  
+  // Team data
+  teamName: string;
+  teamSize: number;
+  participants: Participant[];
+  currentParticipantIndex: number;
+  
+  // Idea data
   ideaTitle: string;
   document: File | null;
   
@@ -30,15 +40,9 @@ interface RegistrationState {
   serverErrors: { [key: string]: string };
   
   // Error states
-  nameError: boolean;
-  emailError: boolean;
-  ageError: boolean;
-  phoneError: boolean;
-  studentOrProfessionalError: boolean;
-  collegeOrCompanyNameError: boolean;
-  githubError: boolean;
-  linkedinError: boolean;
-  devfolioError: boolean;
+  teamNameError: boolean;
+  teamSizeError: boolean;
+  participantErrors: { [key: string]: boolean };
   ideaTitleError: boolean;
   documentError: boolean;
   
@@ -54,17 +58,16 @@ interface RegistrationState {
   nextStep: () => void;
   prevStep: () => void;
   
-  // Form data setters
-  setName: (name: string) => void;
-  setEmail: (email: string) => void;
-  setAge: (age: string) => void;
-  setStdCode: (stdCode: string) => void;
-  setPhone: (phone: string) => void;
-  setStudentOrProfessional: (studentOrProfessional: string) => void;
-  setCollegeOrCompanyName: (collegeOrCompanyName: string) => void;
-  setGithubLink: (githubLink: string) => void;
-  setLinkedinLink: (linkedinLink: string) => void;
-  setDevfolioLink: (devfolioLink: string) => void;
+  // Team data setters
+  setTeamName: (teamName: string) => void;
+  setTeamSize: (teamSize: number) => void;
+  setParticipants: (participants: Participant[]) => void;
+  setCurrentParticipantIndex: (index: number) => void;
+  updateParticipant: (index: number, participant: Partial<Participant>) => void;
+  addParticipant: () => void;
+  removeParticipant: (index: number) => void;
+  
+  // Idea data setters
   setIdeaTitle: (ideaTitle: string) => void;
   setDocument: (document: File | null) => void;
   
@@ -75,15 +78,9 @@ interface RegistrationState {
   setServerErrors: (serverErrors: { [key: string]: string }) => void;
   
   // Error state setters
-  setNameError: (nameError: boolean) => void;
-  setEmailError: (emailError: boolean) => void;
-  setAgeError: (ageError: boolean) => void;
-  setPhoneError: (phoneError: boolean) => void;
-  setStudentOrProfessionalError: (studentOrProfessionalError: boolean) => void;
-  setCollegeOrCompanyNameError: (collegeOrCompanyNameError: boolean) => void;
-  setGithubError: (githubError: boolean) => void;
-  setLinkedinError: (linkedinError: boolean) => void;
-  setDevfolioError: (devfolioError: boolean) => void;
+  setTeamNameError: (teamNameError: boolean) => void;
+  setTeamSizeError: (teamSizeError: boolean) => void;
+  setParticipantErrors: (participantErrors: { [key: string]: boolean }) => void;
   setIdeaTitleError: (ideaTitleError: boolean) => void;
   setDocumentError: (documentError: boolean) => void;
   
@@ -98,6 +95,7 @@ interface RegistrationState {
   validateStep1: () => boolean;
   validateStep2: () => boolean;
   validateStep3: () => boolean;
+  validateStep4: () => boolean;
   
   // Reset functions
   resetErrors: () => void;
@@ -108,17 +106,13 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   // Initial state
   step: 0,
   
-  // Form data initial values
-  name: '',
-  email: '',
-  age: '',
-  stdCode: '+91',
-  phone: '',
-  studentOrProfessional: '',
-  collegeOrCompanyName: '',
-  githubLink: '',
-  linkedinLink: '',
-  devfolioLink: '',
+  // Team data initial values
+  teamName: '',
+  teamSize: 1,
+  participants: [],
+  currentParticipantIndex: 0,
+  
+  // Idea data initial values
   ideaTitle: '',
   document: null,
   
@@ -129,15 +123,9 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   serverErrors: {},
   
   // Error states initial values
-  nameError: false,
-  emailError: false,
-  ageError: false,
-  phoneError: false,
-  studentOrProfessionalError: false,
-  collegeOrCompanyNameError: false,
-  githubError: false,
-  linkedinError: false,
-  devfolioError: false,
+  teamNameError: false,
+  teamSizeError: false,
+  participantErrors: {},
   ideaTitleError: false,
   documentError: false,
   
@@ -150,20 +138,37 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   
   // Step actions
   setStep: (step) => set({ step }),
-  nextStep: () => set((state) => ({ step: Math.min(state.step + 1, 2) })),
+  nextStep: () => set((state) => ({ step: Math.min(state.step + 1, 4) })),
   prevStep: () => set((state) => ({ step: Math.max(state.step - 1, 0) })),
   
-  // Form data setters
-  setName: (name) => set({ name }),
-  setEmail: (email) => set({ email }),
-  setAge: (age) => set({ age }),
-  setStdCode: (stdCode) => set({ stdCode }),
-  setPhone: (phone) => set({ phone }),
-  setStudentOrProfessional: (studentOrProfessional) => set({ studentOrProfessional }),
-  setCollegeOrCompanyName: (collegeOrCompanyName) => set({ collegeOrCompanyName }),
-  setGithubLink: (githubLink) => set({ githubLink }),
-  setLinkedinLink: (linkedinLink) => set({ linkedinLink }),
-  setDevfolioLink: (devfolioLink) => set({ devfolioLink }),
+  // Team data setters
+  setTeamName: (teamName) => set({ teamName }),
+  setTeamSize: (teamSize) => set({ teamSize }),
+  setParticipants: (participants) => set({ participants }),
+  setCurrentParticipantIndex: (index) => set({ currentParticipantIndex: index }),
+  updateParticipant: (index, participant) => set((state) => ({
+    participants: state.participants.map((p, i) => i === index ? { ...p, ...participant } : p)
+  })),
+  addParticipant: () => set((state) => ({
+    participants: [...state.participants, {
+      id: Date.now().toString(),
+      name: '',
+      email: '',
+      age: '',
+      stdCode: '+91',
+      phone: '',
+      studentOrProfessional: '',
+      collegeOrCompanyName: '',
+      githubLink: '',
+      linkedinLink: '',
+      devfolioLink: '',
+    }]
+  })),
+  removeParticipant: (index) => set((state) => ({
+    participants: state.participants.filter((_, i) => i !== index)
+  })),
+  
+  // Idea data setters
   setIdeaTitle: (ideaTitle) => set({ ideaTitle }),
   setDocument: (document) => set({ document }),
   
@@ -174,15 +179,9 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   setServerErrors: (serverErrors) => set({ serverErrors }),
   
   // Error state setters
-  setNameError: (nameError) => set({ nameError }),
-  setEmailError: (emailError) => set({ emailError }),
-  setAgeError: (ageError) => set({ ageError }),
-  setPhoneError: (phoneError) => set({ phoneError }),
-  setStudentOrProfessionalError: (studentOrProfessionalError) => set({ studentOrProfessionalError }),
-  setCollegeOrCompanyNameError: (collegeOrCompanyNameError) => set({ collegeOrCompanyNameError }),
-  setGithubError: (githubError) => set({ githubError }),
-  setLinkedinError: (linkedinError) => set({ linkedinError }),
-  setDevfolioError: (devfolioError) => set({ devfolioError }),
+  setTeamNameError: (teamNameError) => set({ teamNameError }),
+  setTeamSizeError: (teamSizeError) => set({ teamSizeError }),
+  setParticipantErrors: (participantErrors) => set({ participantErrors }),
   setIdeaTitleError: (ideaTitleError) => set({ ideaTitleError }),
   setDocumentError: (documentError) => set({ documentError }),
   
@@ -200,45 +199,16 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
     
     // Reset error states
     set({
-      nameError: false,
-      emailError: false,
-      ageError: false,
-      phoneError: false,
-      studentOrProfessionalError: false,
-      collegeOrCompanyNameError: false,
+      teamNameError: false,
+      teamSizeError: false,
     });
     
-    if (!state.name.trim()) {
-      set({ nameError: true });
+    if (!state.teamName.trim()) {
+      set({ teamNameError: true, error: "Team name is required" });
       isValid = false;
     }
-    if (!state.email.trim() || !/\S+@\S+\.\S+/.test(state.email)) {
-      set({ emailError: true });
-      isValid = false;
-    }
-    if (!state.age.trim()) {
-      set({ ageError: true });
-      isValid = false;
-    } else {
-      const ageNum = parseInt(state.age);
-      if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
-        set({ ageError: true, error: "Please enter a valid age between 1 and 120" });
-        isValid = false;
-      }
-    }
-    if (!state.phone.trim()) {
-      set({ phoneError: true });
-      isValid = false;
-    } else if (state.phone.length !== 10) {
-      set({ phoneError: true });
-      isValid = false;
-    }
-    if (!state.studentOrProfessional) {
-      set({ studentOrProfessionalError: true });
-      isValid = false;
-    }
-    if (!state.collegeOrCompanyName.trim()) {
-      set({ collegeOrCompanyNameError: true });
+    if (state.teamSize < 1 || state.teamSize > 4) {
+      set({ teamSizeError: true, error: "Team size must be between 1 and 4" });
       isValid = false;
     }
     
@@ -248,40 +218,92 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   validateStep2: () => {
     const state = get();
     let isValid = true;
+    const errors: { [key: string]: boolean } = {};
     
-    // Reset error states
-    set({
-      githubError: false,
-      linkedinError: false,
-      devfolioError: false,
+    // Validate all participants
+    state.participants.forEach((participant, index) => {
+      if (!participant.name.trim()) {
+        errors[`participant-${index}-name`] = true;
+        isValid = false;
+      }
+      if (!participant.email.trim() || !/\S+@\S+\.\S+/.test(participant.email)) {
+        errors[`participant-${index}-email`] = true;
+        isValid = false;
+      }
+      if (!participant.age.trim()) {
+        errors[`participant-${index}-age`] = true;
+        isValid = false;
+      } else {
+        const ageNum = parseInt(participant.age);
+        if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
+          errors[`participant-${index}-age`] = true;
+          isValid = false;
+        }
+      }
+      if (!participant.phone.trim()) {
+        errors[`participant-${index}-phone`] = true;
+        isValid = false;
+      } else if (participant.phone.length !== 10) {
+        errors[`participant-${index}-phone`] = true;
+        isValid = false;
+      }
+      if (!participant.studentOrProfessional) {
+        errors[`participant-${index}-studentOrProfessional`] = true;
+        isValid = false;
+      }
+      if (!participant.collegeOrCompanyName.trim()) {
+        errors[`participant-${index}-collegeOrCompanyName`] = true;
+        isValid = false;
+      }
     });
     
-    // Username validation pattern (allow letters, numbers, hyphens, underscores)
-    const usernamePattern = /^[a-zA-Z0-9_-]+$/;
-    const devfolioUrlPattern = /^https?:\/\/(www\.)?devfolio\.co\/@?[a-zA-Z0-9_-]+\/?$/;
-    
-    // Validate GitHub username (optional)
-    if (state.githubLink && !usernamePattern.test(state.githubLink)) {
-      set({ githubError: true, error: "Please enter a valid GitHub username (letters, numbers, hyphens, underscores only)" });
-      isValid = false;
-    }
-    
-    // Validate LinkedIn username (optional)
-    if (state.linkedinLink && !usernamePattern.test(state.linkedinLink)) {
-      set({ linkedinError: true, error: "Please enter a valid LinkedIn username (letters, numbers, hyphens, underscores only)" });
-      isValid = false;
-    }
-    
-    // Validate Devfolio link (optional)
-    if (state.devfolioLink && !devfolioUrlPattern.test(state.devfolioLink)) {
-      set({ devfolioError: true, error: "Please enter a valid Devfolio profile URL (https://devfolio.co/@username)" });
-      isValid = false;
+    set({ participantErrors: errors });
+    if (!isValid) {
+      set({ error: "Please fill in all required participant information" });
     }
     
     return isValid;
   },
   
   validateStep3: () => {
+    const state = get();
+    let isValid = true;
+    const errors: { [key: string]: boolean } = {};
+    
+    // Username validation pattern (allow letters, numbers, hyphens, underscores)
+    const usernamePattern = /^[a-zA-Z0-9_-]+$/;
+    const devfolioUrlPattern = /^https?:\/\/(www\.)?devfolio\.co\/@?[a-zA-Z0-9_-]+\/?$/;
+    
+    // Validate professional profiles for each participant
+    state.participants.forEach((participant, index) => {
+      // Validate GitHub username (optional)
+      if (participant.githubLink && !usernamePattern.test(participant.githubLink)) {
+        errors[`participant-${index}-github`] = true;
+        isValid = false;
+      }
+      
+      // Validate LinkedIn username (optional)
+      if (participant.linkedinLink && !usernamePattern.test(participant.linkedinLink)) {
+        errors[`participant-${index}-linkedin`] = true;
+        isValid = false;
+      }
+      
+      // Validate Devfolio link (optional)
+      if (participant.devfolioLink && !devfolioUrlPattern.test(participant.devfolioLink)) {
+        errors[`participant-${index}-devfolio`] = true;
+        isValid = false;
+      }
+    });
+    
+    set({ participantErrors: errors });
+    if (!isValid) {
+      set({ error: "Please enter valid professional profile information" });
+    }
+    
+    return isValid;
+  },
+  
+  validateStep4: () => {
     const state = get();
     let isValid = true;
     
@@ -309,15 +331,9 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   // Reset functions
   resetErrors: () => set({
     error: '',
-    nameError: false,
-    emailError: false,
-    ageError: false,
-    phoneError: false,
-    studentOrProfessionalError: false,
-    collegeOrCompanyNameError: false,
-    githubError: false,
-    linkedinError: false,
-    devfolioError: false,
+    teamNameError: false,
+    teamSizeError: false,
+    participantErrors: {},
     ideaTitleError: false,
     documentError: false,
     serverErrors: {},
@@ -325,31 +341,19 @@ export const useRegistrationStore = create<RegistrationState>((set, get) => ({
   
   resetForm: () => set({
     step: 0,
-    name: '',
-    email: '',
-    age: '',
-    stdCode: '+91',
-    phone: '',
-    studentOrProfessional: '',
-    collegeOrCompanyName: '',
-    githubLink: '',
-    linkedinLink: '',
-    devfolioLink: '',
+    teamName: '',
+    teamSize: 1,
+    participants: [],
+    currentParticipantIndex: 0,
     ideaTitle: '',
     document: null,
     error: '',
     isSubmitting: false,
     isValidating: false,
     serverErrors: {},
-    nameError: false,
-    emailError: false,
-    ageError: false,
-    phoneError: false,
-    studentOrProfessionalError: false,
-    collegeOrCompanyNameError: false,
-    githubError: false,
-    linkedinError: false,
-    devfolioError: false,
+    teamNameError: false,
+    teamSizeError: false,
+    participantErrors: {},
     ideaTitleError: false,
     documentError: false,
     documentFileName: '',

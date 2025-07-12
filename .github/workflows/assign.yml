@@ -1,0 +1,87 @@
+name: Assign on Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign-on-comment:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request == null
+    steps:
+      - name: Assign users based on comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commentBody = context.payload.comment.body.trim();
+            const commenter = context.payload.comment.user.login;
+            const issueNumber = context.payload.issue.number;
+            const repo = context.repo.repo;
+            const owner = context.repo.owner;
+
+            const isMaintainer = async (username) => {
+              const { data: collaborators } = await github.rest.repos.listCollaborators({
+                owner,
+                repo,
+                affiliation: 'direct'
+              });
+              return collaborators.some(user => user.login === username);
+            };
+
+            const postComment = async (body) => {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body
+              });
+            };
+
+            const commandMatch = commentBody.match(/^\/assign\s*(.*)?$/);
+            if (!commandMatch) return;
+
+            const mentionedUser = commandMatch[1]?.trim();
+            const commenterIsMaintainer = await isMaintainer(commenter);
+
+            if (mentionedUser) {
+              if (!mentionedUser.startsWith('@')) {
+                await postComment("❌ Invalid syntax. Use `/assign @username` to assign someone.");
+                return;
+              }
+
+              const targetUser = mentionedUser.replace('@', '');
+
+              if (!commenterIsMaintainer) {
+                await postComment("❌ You must be a project maintainer to assign others.");
+                return;
+              }
+
+              try {
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  assignees: [targetUser]
+                });
+                await postComment(`✅ Assigned @${targetUser} as requested by maintainer @${commenter}.`);
+              } catch (err) {
+                await postComment(`❌ Failed to assign @${targetUser}. Maybe they don't have permission or aren't a contributor.`);
+              }
+            } else {
+              const assignee = commenter;
+              try {
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  assignees: [assignee]
+                });
+                await postComment(`✅ Assigned @${assignee} to this issue.`);
+              } catch (err) {
+                await postComment(`❌ Failed to assign @${assignee}. Do you have permission or are you a contributor?`);
+              }
+            }

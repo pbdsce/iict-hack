@@ -1,0 +1,86 @@
+name: Smart PR Labeler
+
+on:
+  pull_request_target:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (shallow)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Get minimal history for diff
+
+      - name: Label PR by files changed (with auto-create)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const changedFiles = await github.paginate(
+              github.rest.pulls.listFiles, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+              }
+            );
+
+            const labelsMap = {
+              "GitHub Actions": [".github/"],
+              "Documentation": [".md"],
+              "CI/CD": [".github/workflows/", ".infisical.json", "next.config.mjs"],
+              "Frontend": ["components/", "app/", "public/"],
+              "API": ["app/**/api/", "lib/swagger.ts"],
+              "Styling": [".css", "tailwind.config", "postcss.config"],
+              "Dependencies": ["package.json", "package-lock.json"],
+              "Config": [".config", ".eslintrc", "tsconfig.json", ".gitignore"],
+              "Models": ["models/"],
+              "Utils": ["utils/", "lib/"]
+            };
+
+            const labelsToApply = new Set();
+
+            for (const file of changedFiles) {
+              const filename = file.filename;
+
+              for (const [label, patterns] of Object.entries(labelsMap)) {
+                if (patterns.some(p => filename.includes(p))) {
+                  labelsToApply.add(label);
+                }
+              }
+            }
+
+            const existingLabels = await github.paginate(
+              github.rest.issues.listLabelsForRepo, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              }
+            );
+            const existingLabelNames = new Set(existingLabels.map(l => l.name));
+
+            for (const label of labelsToApply) {
+              if (!existingLabelNames.has(label)) {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: "0e8a16", // Default green
+                  description: `Auto-generated label for ${label} changes`,
+                });
+              }
+            }
+
+            if (labelsToApply.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: [...labelsToApply],
+              });
+            } else {
+              console.log("No matching labels found.");
+            }

@@ -25,6 +25,7 @@ export default function Home() {
         <Brief/>
       </section>
       <Footer />
+      {/* test */}
     </div>
   );
 }

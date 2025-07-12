@@ -4,14 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useRegistrationStore } from "@/lib/registrationStore";
-import PersonalInfoStep from "./PersonalInfoStep";
-import ProfessionalProfilesStep from "./ProfessionalProfilesStep";
+import TeamInfoStep from "./TeamInfoStep";
+import ParticipantDetailsStep from "./ParticipantDetailsStep";
+import TeamProfessionalProfilesStep from "./TeamProfessionalProfilesStep";
 import IdeasVerificationStep from "./IdeasVerificationStep";
+import RegistrationCompletedStep from "./RegistrationCompletedStep";
 
 const steps = [
-  { id: 0, title: "Personal Info", description: "Basic information about you" },
-  { id: 1, title: "Professional", description: "Your professional profiles" },
-  { id: 2, title: "Ideas & Verification", description: "Your idea and final verification" }
+  { id: 0, title: "Team Info", description: "Team name and size" },
+  { id: 1, title: "Participant Details", description: "Information for each team member" },
+  { id: 2, title: "Professional Profiles", description: "Professional links and portfolios" },
+  { id: 3, title: "Ideas & Verification", description: "Your team's idea and final verification" },
+  { id: 4, title: "Registration Complete", description: "Welcome to IICT Hackathon 2024!" }
 ];
 
 export default function RegistrationForm() {
@@ -27,19 +31,14 @@ export default function RegistrationForm() {
     validateStep1,
     validateStep2,
     validateStep3,
+    validateStep4,
     nextStep,
     prevStep,
-    // Form data for submission
-    name,
-    email,
-    age,
-    stdCode,
-    phone,
-    studentOrProfessional,
-    collegeOrCompanyName,
-    githubLink,
-    linkedinLink,
-    devfolioLink,
+    resetForm,
+    // Team data for submission
+    teamName,
+    teamSize,
+    participants,
     ideaTitle,
     document,
   } = useRegistrationStore();
@@ -74,6 +73,8 @@ export default function RegistrationForm() {
       isClientValid = validateStep1();
     } else if (step === 1) {
       isClientValid = validateStep2();
+    } else if (step === 2) {
+      isClientValid = validateStep3();
     }
     
     if (!isClientValid) {
@@ -96,34 +97,35 @@ export default function RegistrationForm() {
     const step1Valid = validateStep1();
     const step2Valid = validateStep2();
     const step3Valid = validateStep3();
+    const step4Valid = validateStep4();
     
-    if (!step1Valid || !step2Valid || !step3Valid) {
+    if (!step1Valid || !step2Valid || !step3Valid || !step4Valid) {
       setIsSubmitting(false);
       return;
     }
   
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('age', age);
-    formData.append('phone', stdCode + phone);
-    formData.append('student_or_professional', studentOrProfessional);
-    formData.append('college_or_company_name', collegeOrCompanyName);
-    formData.append('github_link', githubLink);
-    formData.append('linkedin_link', linkedinLink);
-    formData.append('devfolio_link', devfolioLink);
+    formData.append('team_name', teamName);
+    formData.append('team_size', teamSize.toString());
+    formData.append('participants', JSON.stringify(participants));
     formData.append('idea_title', ideaTitle);
     if (document) formData.append('idea_document', document);
   
     try {
       // Replace with actual registration logic
-      console.log('Registration data:', formData);
+      console.log('Team registration data:', {
+        teamName,
+        teamSize,
+        participants,
+        ideaTitle,
+        document: document?.name
+      });
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Navigate to success page or dashboard
-      router.push('/'); // Redirect to home for now
+      // Go to completion step instead of redirecting
+      nextStep();
     } catch (error) {
       console.error('Registration error:', error);
       setError(error instanceof Error ? error.message : 'An error occurred during registration');
@@ -154,7 +156,7 @@ export default function RegistrationForm() {
               color: 'transparent',
             } as React.CSSProperties}
           >
-            Registration
+            Team Registration
           </h1>
           {/* Fallback text with solid color in case gradient doesn't work */}
           <h1 
@@ -167,7 +169,7 @@ export default function RegistrationForm() {
               zIndex: -1
             } as React.CSSProperties}
           >
-            Registration
+            Team Registration
           </h1>
         </div>
         <p 
@@ -179,7 +181,7 @@ export default function RegistrationForm() {
             opacity: '0.9'
           } as React.CSSProperties}
         >
-          Create your profile and join our hackathon community. Complete the registration form to get started.
+          Register your team for the hackathon. Create your team profile, add team members, and submit your innovative ideas.
         </p>
       </motion.div>
 
@@ -274,7 +276,40 @@ export default function RegistrationForm() {
           </AnimatePresence>
 
           {/* Form Content */}
-          <form onSubmit={handleSubmit} noValidate className="space-y-8">
+          {step < 4 ? (
+            <form onSubmit={handleSubmit} noValidate className="space-y-8">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Step 0: Team Info */}
+                  {step === 0 && (
+                    <TeamInfoStep onNext={handleNext} />
+                  )}
+
+                  {/* Step 1: Participant Details */}
+                  {step === 1 && (
+                    <ParticipantDetailsStep onNext={handleNext} onBack={handleBack} />
+                  )}
+
+                  {/* Step 2: Professional Profiles */}
+                  {step === 2 && (
+                    <TeamProfessionalProfilesStep onNext={handleNext} onBack={handleBack} />
+                  )}
+
+                  {/* Step 3: Ideas & Verification */}
+                  {step === 3 && (
+                    <IdeasVerificationStep onSubmit={handleSubmit} onBack={handleBack} />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </form>
+          ) : (
+            /* Step 4: Registration Complete */
             <AnimatePresence mode="wait">
               <motion.div
                 key={step}
@@ -283,23 +318,13 @@ export default function RegistrationForm() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* Step 0: Personal Info */}
-                {step === 0 && (
-                  <PersonalInfoStep onNext={handleNext} />
-                )}
-
-                {/* Step 1: Professional Profiles */}
-                {step === 1 && (
-                  <ProfessionalProfilesStep onNext={handleNext} onBack={handleBack} />
-                )}
-
-                {/* Step 2: Ideas & Verification */}
-                {step === 2 && (
-                  <IdeasVerificationStep onSubmit={handleSubmit} onBack={handleBack} />
-                )}
+                <RegistrationCompletedStep onStartOver={() => {
+                  resetForm();
+                  router.push('/register');
+                }} />
               </motion.div>
             </AnimatePresence>
-          </form>
+          )}
         </div>
         </div>
       </motion.div>

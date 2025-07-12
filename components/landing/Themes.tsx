@@ -73,7 +73,7 @@ const ProfessionalTitle = memo(() => {
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-[#C540AB] to-[#F570DB] mx-auto rounded-full"></div>
         <p className="mt-6 text-lg text-white max-w-2xl mx-auto">
-          Choose from these exciting themes to build your innovative solution during the hackathon
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
         </p>
       </motion.div>
     </div>

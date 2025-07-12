@@ -2,6 +2,7 @@
 
 import { motion, type Variants } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import logo from '@/public/images/fulllogo.svg';
 
 // Animation variants
@@ -50,6 +51,19 @@ const sloganVariants: Variants = {
   visible: {
     opacity: 1,
     y: 0
+  }
+};
+
+const buttonVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    y: 20,
+    scale: 0.9 
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1
   }
 };
 
@@ -108,6 +122,25 @@ export function Hero(){
             </p>
           </motion.div>
 
+          {/* Register Button */}
+          <motion.div 
+            variants={buttonVariants}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            className="mb-16"
+          >
+            <Link href="/register">
+              <motion.button 
+                className="px-8 py-4 bg-[#C540AB] text-white font-bold text-lg rounded-xl hover:bg-[#E055C3] transition-all duration-300 shadow-lg shadow-[#C540AB]/25 hover:shadow-xl hover:shadow-[#C540AB]/40 font-inter"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(197, 64, 171, 0.3)"
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Register Now
+              </motion.button>
+            </Link>
+          </motion.div>
 
           {/* Event Timer (uncommented and styled) */}
           {/* <motion.div 

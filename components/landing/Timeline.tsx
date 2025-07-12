@@ -6,68 +6,43 @@ import { useState, useEffect, memo } from "react";
 const timelineEvents = [
   {
     date: "Day 1 - 8:00 AM",
-    title: "Participant Check-in",
-    description: "Participants check in and set up for the event.",
+    title: "Lorem Ipsum Dolor",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     date: "Day 1 - 9:00 AM",
-    title: "Opening Talk + Verification",
-    description: "Introduction, rules explanation, and participant verification.",
+    title: "Sed Do Eiusmod Tempor",
+    description: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
     date: "Day 1 - 10:00 AM",
-    title: "Competitive Programming (DSA)",
-    description: "Algorithmic coding challenges to test problem-solving skills.",
+    title: "Ut Enim Ad Minim",
+    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
   },
-  // {
-  //   date: "Day 1 - 1:00 PM",
-  //   title: "Lunch",
-  //   description: "Lunch break before the next competition.",
-  // },
   {
     date: "Day 1 - 2:00 PM",
-    title: "Capture The Flag (CTF) Challenge + Kaggle + Recreational Activity",
-    description: "A mix of cybersecurity, data science, and fun activities.",
+    title: "Duis Aute Irure Dolor",
+    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
   },
-  // {
-  //   date: "Day 1 - 8:00 PM",
-  //   title: "Dinner Break",
-  //   description: "Time to have dinner and refresh before the hackathon.",
-  // },
   {
     date: "Day 1 - 11:00 PM",
-    title: "Hackathon Begins",
-    description: "Official start of the hackathon project development.",
+    title: "Excepteur Sint Occaecat",
+    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
   },
-  // {
-  //   date: "Day 2 - 12:00 PM",
-  //   title: "Lunch",
-  //   description: "Midway lunch break during the hackathon.",
-  // },
-  // {
-  //   date: "Day 2 - 4:00 PM",
-  //   title: "Snacks Break",
-  //   description: "Refreshments and quick break before pitching rounds.",
-  // },
   {
     date: "Day 2 - 4:30 PM",
-    title: "First Round of Pitching",
-    description: "Initial round where teams present their projects.",
+    title: "At Vero Eos Et Accusamus",
+    description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.",
   },
   {
     date: "Day 2 - 6:30 PM",
-    title: "Final Pitching Round",
-    description: "Final presentations to judges before the closing ceremony.",
+    title: "Nam Libero Tempore",
+    description: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil.",
   },
-  // {
-  //   date: "Day 2 - 7:30 PM",
-  //   title: "Dinner",
-  //   description: "Dinner break after the final pitching round.",
-  // },
   {
     date: "Day 2 - 9:00 PM",
-    title: "Award Ceremony & Closing Remarks",
-    description: "Announcement of winners and event conclusion.",
+    title: "Temporibus Autem Quibusdam",
+    description: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus.",
   },
 ];
 

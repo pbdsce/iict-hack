@@ -3,6 +3,7 @@ import { Timeline } from "@/components/landing/Timeline";
 import Themes from "@/components/landing/Themes";
 import Brief from "@/components/landing/FAQ";
 import { SectionDecorations } from "@/components/ui/section-decorations";
+import { Footer } from "@/components/ui/footer";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <SectionDecorations variant="faq" />
         <Brief/>
       </section>
+      <Footer />
     </div>
   );
 }

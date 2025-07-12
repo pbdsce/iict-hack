@@ -27,21 +27,21 @@ export default function Brief() {
     general: {
       questions: [
         {
-          question: "What is Zenith?",
-          answer: "Zenith is a flagship 36-hour tech contest organized by Point Blank. It brings together 200+ top programmers for CTF, hackathons, competitive programming, and a Kaggle competition."
+          question: "Lorem ipsum dolor sit amet consectetur?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
         },
         
         {
-          question: "What kind of prizes can participants expect?",
-          answer: "Prizes include cash rewards, goodies, certificates, and special surprises for the winners."
+          question: "Sed ut perspiciatis unde omnis iste natus?",
+          answer: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis."
         },
         {
-          question: "What expenses does Zenith cover for participants?",
-          answer: "Zenith covers the registration fees for all participants, ensuring a seamless experience for attendees."
+          question: "At vero eos et accusamus dignissimos?",
+          answer: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident."
         },
         {
-          question: "Are travel-related expenses reimbursable for participants?",
-          answer: "We will not cover travel expenses for participants."
+          question: "Nam libero tempore soluta nobis eligendi?",
+          answer: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est."
         }
         
       ]
@@ -49,44 +49,44 @@ export default function Brief() {
     events: {
       questions: [
         {
-          question: "What are the different contests in Zenith?",
-          answer: "Zenith features CTF for cybersecurity challenges, a Hackathon for software and AI innovation, Competitive Programming for algorithmic problem-solving, and a Kaggle Competition for AI/ML-based challenges."
+          question: "Temporibus autem quibusdam officiis debitis?",
+          answer: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae."
         },
         {
-          question: "How do I register?",
-          answer: "Registration details will be announced soon on our official website and social media."
+          question: "Et harum quidem rerum facilis expedita?",
+          answer: "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat."
         },
         {
-          question: "Can I participate individually or in teams?",
-          answer: "Registrations are individual, and teams will be formed on the spot during the event. You can explore participant profiles and connect with others beforehand to set up your team. If you don’t have a team by then, we’ll assign you one at the event."
+          question: "Itaque earum rerum hic tenetur sapiente?",
+          answer: "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
         }
       ]
     },
     accomodation: {
       questions: [
         {
-          question: "Will food and accommodation be provided?",
-          answer: "Yes, participants will have access to food and rest areas during the 36-hour contest."
+          question: "Neque porro quisquam est qui dolorem?",
+          answer: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."
         },
         {
-          question: "What should I bring to the event?",
-          answer: "Bring your laptop, chargers, ID card, and any necessary accessories for coding. Internet access and power outlets will be provided."
+          question: "Ut enim ad minima veniam exercitationem?",
+          answer: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur."
         },
         {
-          question: "Will there be mentorship or guidance available?",
-          answer: "Yes, industry professionals and mentors will be present to guide participants during the event."
+          question: "Vel illum qui dolorem eum fugiat quo?",
+          answer: "Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores."
         }
       ]
     },
     contact: {
       questions: [
         {
-          question: "How can I contact the organizers?",
-          answer: "Reach out to us at zenith@pointblank.club or through our social media channels."
+          question: "Quis autem vel eum iure reprehenderit?",
+          answer: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
         },
         {
-          question: "What if I have technical issues during the event?",
-          answer: "We'll have a dedicated technical support team available throughout the event."
+          question: "Sed quia consequuntur magni dolores eos?",
+          answer: "Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit."
         }
       ]
     }
@@ -131,7 +131,7 @@ export default function Brief() {
             </motion.h2>
             <div className="w-24 h-1 bg-gradient-to-r from-[#C540AB] to-[#F570DB] mx-auto rounded-full"></div>
             <p className="mt-6 text-lg text-white max-w-2xl mx-auto">
-              Find answers to common questions about Zenith hackathon
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
             </p>
           </div>
 

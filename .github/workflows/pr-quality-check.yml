@@ -3,7 +3,7 @@ name: PR Quality Checks
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
-    branches: [staging, prod]
+    branches: [main]
 
 permissions:
   contents: read

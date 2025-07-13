@@ -46,6 +46,10 @@ const teamRegistrationSchema = new mongoose.Schema(
       min: 1,
       max: 4,
     },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
     idea_title: {
       type: String,
       required: true,

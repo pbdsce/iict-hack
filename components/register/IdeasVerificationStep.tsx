@@ -56,6 +56,7 @@ export default function IdeasVerificationStep({ onSubmit, onBack }: IdeasVerific
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   // Initialize captcha questions
   const initializeCaptcha = () => {
@@ -104,12 +105,17 @@ export default function IdeasVerificationStep({ onSubmit, onBack }: IdeasVerific
       return;
     }
     
+    // Clean up previous previewUrl if any
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
     // Simulate upload delay
     setTimeout(() => {
       setDocument(file);
       setDocumentFileName(file.name);
       setError("");
       setIsUploading(false);
+      setPreviewUrl(URL.createObjectURL(file));
       if (documentError) setDocumentError(false);
     }, 1000);
   };
@@ -145,6 +151,10 @@ export default function IdeasVerificationStep({ onSubmit, onBack }: IdeasVerific
     setDocumentFileName('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
     }
   };
 
@@ -263,6 +273,16 @@ export default function IdeasVerificationStep({ onSubmit, onBack }: IdeasVerific
                       <span className="text-xs sm:text-sm font-medium text-green-400">File uploaded successfully</span>
                     </div>
                     <p className="text-xs sm:text-sm text-gray-300 truncate">{documentFileName}</p>
+                    {previewUrl && (
+                      <div className="mt-3 rounded-lg overflow-auto border border-white/10 bg-black/20 flex justify-center">
+                        <iframe
+                          src={previewUrl}
+                          title="PDF Preview"
+                          className="bg-white shadow-lg"
+                          style={{ width: 595, height: 842, maxWidth: '100%' }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <Button
                     type="button"

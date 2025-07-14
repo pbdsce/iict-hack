@@ -134,6 +134,14 @@ export default function RegistrationForm() {
     }
   };
 
+  const handleEnter = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header Section */}
@@ -277,7 +285,7 @@ export default function RegistrationForm() {
 
           {/* Form Content */}
           {step < 4 ? (
-            <form onSubmit={handleSubmit} noValidate className="space-y-8">
+            <form onSubmit={handleSubmit} onKeyDown={handleEnter} noValidate className="space-y-8">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={step}

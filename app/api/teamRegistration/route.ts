@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { connectDB, TeamRegistration } from "@/lib/database";
+import {
+  connectDB,
+  TeamRegistration,
+  sanitizeRegexInput,
+} from "@/lib/database";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import * as fs from "fs";
 import * as path from "path";
@@ -169,8 +173,9 @@ export async function POST(request: Request) {
     }
 
     // Check if team name already exists
+    const safeTeamName = sanitizeRegexInput(data.team_name.trim());
     const existingTeam = await TeamRegistration.findOne({
-      team_name: { $regex: `^${data.team_name.trim()}$`, $options: "i" },
+      team_name: { $regex: `^${safeTeamName}$`, $options: "i" },
     });
 
     if (existingTeam) {
@@ -458,8 +463,9 @@ export async function GET(request: Request) {
     await connectDB();
 
     // Check database for existing team names
+    const safeTeamName = sanitizeRegexInput(teamName.trim());
     const existingTeam = await TeamRegistration.findOne({
-      team_name: { $regex: `^${teamName.trim()}$`, $options: "i" },
+      team_name: { $regex: `^${safeTeamName}$`, $options: "i" },
     });
 
     const isAvailable = !existingTeam;

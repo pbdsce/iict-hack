@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB, College } from "@/lib/database";
+import { connectDB, College, sanitizeRegexInput } from "@/lib/database";
 
 // Interface definitions
 interface Participant {
@@ -47,8 +47,9 @@ const createCustomColleges = async (collegeNames: string[]) => {
   for (const collegeName of collegeNames) {
     try {
       // Check if college already exists
+      const safeCollegeName = sanitizeRegexInput(collegeName.trim());
       const existingCollege = await College.findOne({
-        name: { $regex: `^${collegeName.trim()}$`, $options: "i" },
+        name: { $regex: `^${safeCollegeName}$`, $options: "i" },
       });
 
       if (!existingCollege) {

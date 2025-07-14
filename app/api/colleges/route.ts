@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB, College } from "@/lib/database";
+import { connectDB, College, sanitizeRegexInput } from "@/lib/database";
 
 export async function GET(request: Request) {
   try {
@@ -11,8 +11,9 @@ export async function GET(request: Request) {
     // Filter colleges based on search query
     let query = {};
     if (search) {
+      const safeSearch = sanitizeRegexInput(search);
       query = {
-        name: { $regex: search, $options: "i" },
+        name: { $regex: safeSearch, $options: "i" },
       };
     }
 
@@ -60,8 +61,9 @@ export async function POST(request: Request) {
     }
 
     // Check if college already exists
+    const safeName = sanitizeRegexInput(name.trim());
     const existingCollege = await College.findOne({
-      name: { $regex: `^${name.trim()}$`, $options: "i" },
+      name: { $regex: `^${safeName}$`, $options: "i" },
     });
 
     if (existingCollege) {

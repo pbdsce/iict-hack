@@ -1,12 +1,36 @@
 import mongoose from "mongoose";
 
-// Database connection
+// Database connection status
+const STATES = {
+  disconnected: 0,
+  connected: 1,
+  connecting: 2,
+  disconnecting: 3,
+};
+
+let isConnecting = false;
+
+// Database connection with improved guard mechanism
 export const connectDB = async () => {
-  if (mongoose.connections[0].readyState) {
+  // Check if already connected
+  if (mongoose.connections[0].readyState === STATES.connected) {
+    return;
+  }
+
+  // Check if currently connecting to avoid multiple connection attempts
+  if (
+    isConnecting ||
+    mongoose.connections[0].readyState === STATES.connecting
+  ) {
+    // Wait for the current connection attempt to complete
+    while (mongoose.connections[0].readyState === STATES.connecting) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
     return;
   }
 
   try {
+    isConnecting = true;
     await mongoose.connect(
       process.env.MONGODB_URI || "mongodb://localhost:27017/iict-hack"
     );
@@ -14,7 +38,14 @@ export const connectDB = async () => {
   } catch (error) {
     console.error("Database connection error:", error);
     throw error;
+  } finally {
+    isConnecting = false;
   }
+};
+
+// Utility function to sanitize regex input and prevent ReDoS attacks
+export const sanitizeRegexInput = (input: string): string => {
+  return input.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
 // College Schema

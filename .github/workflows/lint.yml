@@ -3,12 +3,10 @@ name: Lint
 on:
   push:
     branches:
-      - prod
-      - staging
+      - main
   pull_request:
     branches:
-      - prod
-      - staging
+      - main
 
 jobs:
   lint:

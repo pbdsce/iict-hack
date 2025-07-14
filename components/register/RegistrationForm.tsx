@@ -227,6 +227,14 @@ export default function RegistrationForm() {
     }
   };
 
+  const handleEnter = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header Section */}
@@ -385,64 +393,64 @@ export default function RegistrationForm() {
             </AnimatePresence>
 
             {/* Form Content */}
-            {step < 4 ? (
-              <form onSubmit={handleSubmit} noValidate className="space-y-8">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={step}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {/* Step 0: Team Info */}
-                    {step === 0 && <TeamInfoStep onNext={handleNext} />}
+{step < 4 ? (
+  <form onSubmit={handleSubmit} onKeyDown={handleEnter} noValidate className="space-y-8">
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={step}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Step 0: Team Info */}
+        {step === 0 && <TeamInfoStep onNext={handleNext} />}
 
-                    {/* Step 1: Participant Details */}
-                    {step === 1 && (
-                      <ParticipantDetailsStep
-                        onNext={handleNext}
-                        onBack={handleBack}
-                      />
-                    )}
+        {/* Step 1: Participant Details */}
+        {step === 1 && (
+          <ParticipantDetailsStep
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        )}
 
-                    {/* Step 2: Professional Profiles */}
-                    {step === 2 && (
-                      <TeamProfessionalProfilesStep
-                        onNext={handleNext}
-                        onBack={handleBack}
-                      />
-                    )}
+        {/* Step 2: Professional Profiles */}
+        {step === 2 && (
+          <TeamProfessionalProfilesStep
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        )}
 
-                    {/* Step 3: Ideas & Verification */}
-                    {step === 3 && (
-                      <IdeasVerificationStep
-                        onSubmit={handleSubmit}
-                        onBack={handleBack}
-                      />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </form>
-            ) : (
-              /* Step 4: Registration Complete */
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <RegistrationCompletedStep
-                    onStartOver={() => {
-                      resetForm();
-                      router.push("/register");
-                    }}
-                  />
-                </motion.div>
-              </AnimatePresence>
-            )}
+        {/* Step 3: Ideas & Verification */}
+        {step === 3 && (
+          <IdeasVerificationStep
+            onSubmit={handleSubmit}
+            onBack={handleBack}
+          />
+        )}
+      </motion.div>
+    </AnimatePresence>
+  </form>
+) : (
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={step}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <RegistrationCompletedStep
+        onStartOver={() => {
+          resetForm();
+          router.push("/register");
+        }}
+      />
+    </motion.div>
+  </AnimatePresence>
+)}
+
           </div>
         </div>
       </motion.div>

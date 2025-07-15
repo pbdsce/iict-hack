@@ -247,33 +247,28 @@ export default function RegistrationForm() {
         <div className="relative">
           <h1
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight relative z-10"
-            style={
-              {
-                fontFamily: "Monotype Corsiva, cursive",
-                fontStyle: "italic",
-                background:
-                  "linear-gradient(135deg, #C540AB 0%, #E055C3 50%, #F570DB 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                color: "transparent",
-              } as React.CSSProperties
-            }
+            style={{
+              fontFamily: 'Times New Roman, serif',
+              fontStyle: 'italic',
+              background: 'linear-gradient(135deg, #C540AB 0%, #E055C3 50%, #F570DB 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent',
+            } as React.CSSProperties}
           >
             Team Registration
           </h1>
           {/* Fallback text with solid color in case gradient doesn't work */}
           <h1
             className="gradient-fallback absolute top-0 left-1/2 transform -translate-x-1/2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight opacity-100 pointer-events-none"
-            style={
-              {
-                fontFamily: "Monotype Corsiva, cursive",
-                fontStyle: "italic",
-                color: "#E055C3",
-                textShadow: "0 0 20px rgba(224, 85, 195, 0.4)",
-                zIndex: -1,
-              } as React.CSSProperties
-            }
+            style={{
+              fontFamily: 'Times New Roman, serif',
+              fontStyle: 'italic',
+              color: '#E055C3',
+              textShadow: '0 0 20px rgba(224, 85, 195, 0.4)',
+              zIndex: -1
+            } as React.CSSProperties}
           >
             Team Registration
           </h1>

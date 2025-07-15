@@ -1,4 +1,4 @@
-/* Monotype Corsiva is a system font, no need to load it */
+/* Times New Roman is a system font, no need to load it */
 
 @tailwind base;
 @tailwind components;
@@ -70,10 +70,10 @@
     font-family: 'Inter', sans-serif;
   }
   
-  /* Apply Monotype Corsiva to headings - but don't override inline styles */
-  h1:not([style*="fontFamily"]), h2:not([style*="fontFamily"]), h3:not([style*="fontFamily"]), h4:not([style*="fontFamily"]), h5:not([style*="fontFamily"]), h6:not([style*="fontFamily"]) {
+  /* Apply Times New Roman italic to headings - but don't override inline styles */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Times New Roman', serif;
     font-style: italic;
-    font-family: 'Monotype Corsiva', cursive;
   }
   
   /* Style for primary text content with Inter */
@@ -99,10 +99,10 @@
     font-family: 'Inter', sans-serif;
   }
   
-  /* Override for headings to use Monotype Corsiva - but allow inline styles to override */
-  h1:not([style*="fontFamily"]), h2:not([style*="fontFamily"]), h3:not([style*="fontFamily"]), h4:not([style*="fontFamily"]), h5:not([style*="fontFamily"]), h6:not([style*="fontFamily"]) {
-    font-family: 'Monotype Corsiva', cursive;
-    font-style: italic;
+  /* Override for headings to use Times New Roman - but allow inline styles to override */
+  .heading {
+    font-family: 'Times New Roman', serif !important;
+    font-style: italic !important;
   }
   
   /* Hide fallback text when gradient text is supported */

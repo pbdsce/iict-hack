@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        'corsiva': ['Monotype Corsiva', 'cursive'],
+        'corsiva': ['Times New Roman', 'serif'],
         'inter': ['Inter', 'sans-serif'],
       },
       colors: {

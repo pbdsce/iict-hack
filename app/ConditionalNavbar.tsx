@@ -1,6 +1,6 @@
 "use client";
 
-import { NavbarFinal } from "@/components/ui/navbar";
+import AnimatedNavbar from "@/components/ui/navbar";
 import { usePathname } from "next/navigation";
 
 export default function ConditionalNavbar({
@@ -14,7 +14,12 @@ export default function ConditionalNavbar({
   const shouldShowNavbar = !pathname.startsWith("/register");
 
   if (shouldShowNavbar) {
-    return <NavbarFinal>{children}</NavbarFinal>;
+    return (
+      <>
+        <AnimatedNavbar />
+        {children}
+      </>
+    );
   }
 
   return <>{children}</>;

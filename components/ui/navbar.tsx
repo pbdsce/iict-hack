@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import logo from '@/public/images/shortlogo.png';
 
 
@@ -73,15 +74,10 @@ export default function AnimatedNavbar() {
         {/* Logo */}
         <a href="#" className="flex-shrink-0">
           {/* Constraining image size with Tailwind classes for better control */}
-          <img 
-            src={logo.src} 
+          <Image 
+            src={logo} 
             alt="Logo" 
             className="h-10 w-auto" 
-            onError={(e) => { 
-              const target = e.target as HTMLImageElement;
-              target.onerror = null; 
-              target.src='https://placehold.co/120x40/C83DAD/white?text=Logo'; 
-            }}
           />
         </a>
 

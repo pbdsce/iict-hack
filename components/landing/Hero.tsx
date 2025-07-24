@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
+import Image from 'next/image';
 import defaults from '@/public/images/default.svg';
 import variant from '@/public/images/variant.svg';
 
@@ -14,19 +15,6 @@ const containerVariants: Variants = {
       duration: 0.8,
       staggerChildren: 0.3
     }
-  }
-};
-
-const itemVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 30,
-    scale: 0.9 
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1
   }
 };
 
@@ -99,15 +87,15 @@ export function Hero(){
               onMouseLeave={() => setIsLogoHovered(false)}
             >
               {/* Default Logo Image */}
-              <img 
-                src={defaults.src}
+              <Image 
+                src={defaults}
                 alt="HashBoot" 
                 className="w-full h-auto transition-opacity duration-500 ease-in-out"
                 style={{ opacity: isLogoHovered ? 0 : 1 }}
               />
               {/* Variant Logo Image (positioned absolutely on top) */}
-              <img 
-                src={variant.src}
+              <Image 
+                src={variant}
                 alt="HashBoot Variant" 
                 className="w-full h-auto absolute top-0 left-0 transition-opacity duration-500 ease-in-out"
                 style={{ opacity: isLogoHovered ? 1 : 0 }}

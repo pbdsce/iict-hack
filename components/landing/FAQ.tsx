@@ -22,7 +22,7 @@ interface MenuItem {
   icon: React.FC<{ className?: string }>;
 }
 
-export default function Brief() {
+export default function FAQ() {
   const faqData: FAQData = {
     general: {
       questions: [
@@ -97,20 +97,67 @@ export default function Brief() {
     { id: 'events', label: 'EVENTS', icon: Target },
     { id: 'accomodation', label: 'ACCOMODATION', icon: Crosshair },
     { id: 'contact', label: 'CONTACT', icon: Briefcase }
-  ];
+];
 
   const [selectedSection, setSelectedSection] = useState<keyof FAQData>('general');
   const [openQuestion, setOpenQuestion] = useState<string | null>(null);
 
   const toggleQuestion = (questionId: string) => {
-    if (openQuestion === questionId) {
-      // If clicking the same question, close it
-      setOpenQuestion(null);
-    } else {
-      // Otherwise open the new question (and automatically close the previous one)
-      setOpenQuestion(questionId);
-    }
+    setOpenQuestion(openQuestion === questionId ? null : questionId);
   };
+
+  const faqList = (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={selectedSection}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
+        className="space-y-4"
+      >
+        {faqData[selectedSection].questions.map((item, index) => (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            key={index}
+            // Applying the "glass effect" to the FAQ item
+            className="border border-white/10 rounded-lg bg-black/40 backdrop-blur-md shadow-lg transition-all duration-300 hover:border-[#C83DAD] hover:shadow-xl hover:shadow-[#C83DAD]/30 group"
+          >
+            <button
+              onClick={() => toggleQuestion(`${selectedSection}-${index}`)}
+              className="w-full py-6 px-6 flex justify-between items-center text-left text-white group-hover:text-[#C83DAD] transition-colors"
+            >
+              <span className="text-xl font-medium pr-8">{item.question}</span>
+              <motion.div
+                animate={{ rotate: openQuestion === `${selectedSection}-${index}` ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+                className={`transition-colors duration-300 ${ openQuestion === `${selectedSection}-${index}` ? 'text-[#C83DAD]' : 'group-hover:text-[#C83DAD]' }`}
+              >
+                <ChevronDown className="w-6 h-6" />
+              </motion.div>
+            </button>
+            <AnimatePresence>
+              {openQuestion === `${selectedSection}-${index}` && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="pb-6 px-6 text-white/80 text-lg leading-relaxed">
+                    {item.answer}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        ))}
+      </motion.div>
+    </AnimatePresence>
+  );
 
   return (
     <section className="h-full py-20 bg-black" id="faq">
@@ -121,33 +168,18 @@ export default function Brief() {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center mb-12 md:mb-20">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#C540AB] via-[#E055C3] to-[#F570DB] bg-clip-text text-transparent font-corsiva italic"
-            >
+            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#C83DAD] via-[#DE5FB9] to-[#F481C9] bg-clip-text text-transparent font-corsiva italic">
               Frequently Asked Questions
-            </motion.h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#C540AB] to-[#F570DB] mx-auto rounded-full"></div>
-            <p className="mt-6 text-lg text-white max-w-2xl mx-auto">
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-[#C83DAD] to-[#F481C9] mx-auto rounded-full"></div>
+            <p className="mt-6 text-lg text-white/80 max-w-2xl mx-auto">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
             </p>
           </div>
 
+          {/* Mobile Tabs */}
           <div className="lg:hidden relative mb-8">
-            <div 
-              className="flex overflow-x-auto px-4 sm:px-6 space-x-4 pb-4"
-              style={{
-                msOverflowStyle: 'none',
-                scrollbarWidth: 'none',
-              }}
-            >
-              <style jsx>{`
-                div::-webkit-scrollbar {
-                  display: none;
-                }
-              `}</style>
+            <div className="flex overflow-x-auto px-4 sm:px-6 space-x-4 pb-4 no-scrollbar">
               {menuItems.map((item, index) => (
                 <motion.button
                   initial={{ opacity: 0, x: -20 }}
@@ -155,21 +187,17 @@ export default function Brief() {
                   transition={{ delay: index * 0.1 }}
                   key={item.id}
                   onClick={() => setSelectedSection(item.id)}
-                  className={`flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-full border transition-all duration-300
-                    ${selectedSection === item.id 
-                      ? 'bg-[#C540AB]/10 text-[#C540AB] border-[#C540AB]' 
-                      : 'text-gray-400 hover:text-white border-gray-700 hover:border-gray-600'}`}
+                  className={`flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-full border transition-all duration-300 ${ selectedSection === item.id ? 'bg-[#C83DAD]/10 text-[#C83DAD] border-[#C83DAD]' : 'text-gray-400 hover:text-white border-gray-700 hover:border-gray-600' }`}
                 >
-                  <item.icon className={`w-5 h-5 ${selectedSection === item.id ? 'text-[#C540AB]' : 'text-gray-400'}`} />
+                  <item.icon className="w-5 h-5" />
                   <span className="text-base font-medium">{item.label}</span>
                 </motion.button>
               ))}
             </div>
-            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent pointer-events-none" />
           </div>
 
-          <div className="hidden lg:grid lg:grid-cols-12 gap-8 lg:gap-12 px-4 sm:px-6 lg:px-8">
+                    {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start">
               <div className="space-y-4">
                 {menuItems.map((item, index) => (
@@ -179,135 +207,30 @@ export default function Brief() {
                     transition={{ delay: index * 0.1 }}
                     key={item.id}
                     onClick={() => setSelectedSection(item.id)}
-                    className={`w-full text-left py-5 border-b-2 transition-all duration-300 
-                      flex items-center gap-4 hover:pl-2
-                      ${selectedSection === item.id 
-                        ? 'border-[#C540AB] text-[#C540AB]' 
-                        : 'border-gray-700 text-gray-400 hover:text-white hover:border-gray-600'}`}
+                    className={`w-full text-left py-5 border-b-2 transition-all duration-300 flex items-center gap-4 hover:pl-2 ${ selectedSection === item.id ? 'border-[#C83DAD] text-[#C83DAD]' : 'border-gray-700 text-gray-400 hover:text-white hover:border-gray-600' }`}
                   >
-                    <item.icon className={`w-6 h-6 ${selectedSection === item.id ? 'text-[#C540AB]' : 'text-gray-400'}`} />
+                    <item.icon className="w-6 h-6" />
                     <span className="text-xl tracking-wider font-medium">{item.label}</span>
                   </motion.button>
                 ))}
               </div>
             </div>
-
             <div className="lg:col-span-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedSection}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-6"
-                >
-                  {faqData[selectedSection].questions.map((item, index) => (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      key={index}
-                      className="border border-gray-700 rounded-lg bg-gray-900 shadow-lg transition-all duration-300 hover:border-[#C540AB] hover:shadow-xl hover:shadow-[#C540AB]/30 group"
-                    >
-                      <button
-                        onClick={() => toggleQuestion(`${selectedSection}-${index}`)}
-                        className="w-full py-6 px-6 flex justify-between items-center text-left text-white group-hover:text-[#C540AB] transition-colors"
-                      >
-                        <span className="text-xl font-medium pr-8">{item.question}</span>
-                        <motion.div
-                          animate={{ rotate: openQuestion === `${selectedSection}-${index}` ? 180 : 0 }}
-                          transition={{ duration: 0.2 }}
-                          className={`transition-colors duration-300 ${
-                            openQuestion === `${selectedSection}-${index}` 
-                              ? 'text-[#C540AB]' 
-                              : 'group-hover:text-[#C540AB]'
-                          }`}
-                        >
-                          <ChevronDown className="w-6 h-6" />
-                        </motion.div>
-                      </button>
-                      <AnimatePresence>
-                        {openQuestion === `${selectedSection}-${index}` && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pb-6 px-6 text-white text-lg leading-relaxed">
-                              {item.answer}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+              {faqList}
             </div>
           </div>
-
+          
+          {/* Mobile FAQ List */}
           <div className="lg:hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedSection}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-4"
-              >
-                {faqData[selectedSection].questions.map((item, index) => (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    key={index}
-                    className="border border-gray-700 rounded-lg bg-gray-900 shadow-lg transition-all duration-300 hover:border-[#C540AB] hover:shadow-xl hover:shadow-[#C540AB]/30"
-                  >
-                    <button
-                      onClick={() => toggleQuestion(`${selectedSection}-${index}`)}
-                      className="w-full py-6 px-6 flex justify-between items-center text-left text-white hover:text-[#C540AB] transition-colors"
-                    >
-                      <span className="text-xl font-medium pr-8">{item.question}</span>
-                      <motion.div
-                        animate={{ rotate: openQuestion === `${selectedSection}-${index}` ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
-                        className={`transition-colors duration-300 ${
-                          openQuestion === `${selectedSection}-${index}` 
-                            ? 'text-[#C540AB]' 
-                            : 'hover:text-[#C540AB]'
-                        }`}
-                      >
-                        <ChevronDown className="w-6 h-6" />
-                      </motion.div>
-                    </button>
-                    <AnimatePresence>
-                      {openQuestion === `${selectedSection}-${index}` && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pb-6 px-6 text-white text-lg leading-relaxed">
-                            {item.answer}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+            {faqList}
           </div>
-
         </motion.div>
       </div>
+       {/* CSS to hide scrollbar, as inline style might not be supported everywhere */}
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </section>
   );
 }
-

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BackgroundDecorations } from "@/components/ui/background-decorations";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ConditionalNavbar from "./ConditionalNavbar";
+import Navbar from "@/components/ui/navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,13 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} antialiased font-inter`}
-      >
+      <body>
         <BackgroundDecorations />
-        <ConditionalNavbar>
+        <Navbar/>
           {children}
-        </ConditionalNavbar>
       </body>
     </html>
   );

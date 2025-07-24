@@ -152,6 +152,7 @@
   
   /* Enable smooth scrolling globally */
   html {
+    scroll-padding-top: 80px;
     scroll-behavior: smooth;
   }
   

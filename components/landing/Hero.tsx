@@ -1,11 +1,11 @@
 'use client';
 
+import React, { useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import logo from '@/public/images/fulllogo.svg';
+import defaults from '@/public/images/default.svg';
+import variant from '@/public/images/variant.svg';
 
-// Animation variants
+// Animation variants (unchanged)
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -68,11 +68,14 @@ const buttonVariants: Variants = {
 };
 
 export function Hero(){
+  // State to manage the hover effect for the logo
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    // Set background to black and default text to white
+    <div className="flex items-center justify-center -mt-16 min-h-screen text-white px-4 sm:px-6 lg:px-8">
       <motion.div 
-        className="container h-full relative z-10 px-1"
+        className="container h-full relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -89,67 +92,68 @@ export function Hero(){
               duration: 1.2
             }}
           >
-            <div className="relative">
-              <Image 
-                src={logo.src} 
+            {/* Logo container with state-based hover events */}
+            <div 
+              className="relative w-[60rem] -mb-10"
+              onMouseEnter={() => setIsLogoHovered(true)}
+              onMouseLeave={() => setIsLogoHovered(false)}
+            >
+              {/* Default Logo Image */}
+              <img 
+                src={defaults.src}
                 alt="HashBoot" 
-                width={100} 
-                height={100} 
-                className="w-72 md:w-[40rem] drop-shadow-2xl mb-10" 
-                priority
+                className="w-full h-auto transition-opacity duration-500 ease-in-out"
+                style={{ opacity: isLogoHovered ? 0 : 1 }}
+              />
+              {/* Variant Logo Image (positioned absolutely on top) */}
+              <img 
+                src={variant.src}
+                alt="HashBoot Variant" 
+                className="w-full h-auto absolute top-0 left-0 transition-opacity duration-500 ease-in-out"
+                style={{ opacity: isLogoHovered ? 1 : 0 }}
               />
             </div>
           </motion.div>
           
-          {/* Slogan */}
+          {/* Slogan with updated accent color */}
           <motion.div 
-            className="mb-12"
+            className="mt-10 sm:mt-8 md:mt-10"
             variants={sloganVariants}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           >
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#C540AB] mb-4 font-corsiva italic">
-                Boot Your Brain. Hash the Impossible.
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#C83DAD] mb-6 sm:mb-8 md:mb-10 font-corsiva italic px-4 leading-tight">
+              Boot Your Brain. Hash the Impossible.
             </h1>
           </motion.div>
 
           {/* Enhanced description */}
-          <motion.div 
+          {/* <motion.div 
             variants={itemVariants}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <p className="text-sm md:text-lg text-white/70 leading-relaxed max-w-2xl mx-auto mb-8 font-inter">
+            <p className="text-sm md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto mb-8 font-inter">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </p>
-          </motion.div>
+          </motion.div> */}
 
-          {/* Register Button */}
+          {/* Register Button with white glass effect */}
           <motion.div 
             variants={buttonVariants}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            className="mb-16"
+            className="mt-6 sm:mt-8 md:mt-10 px-4"
           >
-            <Link href="/register">
+            <a href="/register">
               <motion.button 
-                className="px-8 py-4 bg-[#C540AB] text-white font-bold text-lg rounded-xl hover:bg-[#E055C3] transition-all duration-300 shadow-lg shadow-[#C540AB]/25 hover:shadow-xl hover:shadow-[#C540AB]/40 font-inter"
-                whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(197, 64, 171, 0.3)"
-                }}
+                className="px-6 sm:px-8 py-3 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-300 font-inter
+                           bg-white/10 backdrop-blur-md border border-white/20 shadow-lg
+                           hover:bg-white/20 hover:shadow-xl w-full sm:w-auto max-w-xs sm:max-w-none mx-auto"
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Register Now
+                Register For Hackathon
               </motion.button>
-            </Link>
+            </a>
           </motion.div>
-
-          {/* Event Timer (uncommented and styled) */}
-          {/* <motion.div 
-            className="mt-16"
-            variants={itemVariants}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
-          >
-            <EventTimer targetDate={new Date("2025-04-27T00:00:00").toISOString()} />
-          </motion.div> */}
         </div>
       </motion.div>
     </div>

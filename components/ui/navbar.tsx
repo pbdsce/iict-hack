@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation'; // 1. Import usePathname
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import logo from '@/public/images/shortlogo.png';
@@ -15,32 +15,26 @@ const navLinks = [
 ];
 
 export default function AnimatedNavbar() {
-  const pathname = usePathname(); // 2. Get the current path
-
-  // 3. Conditionally render null if the path is /register
-  if (pathname === '/register') {
-    return null;
-  }
-
-  // State to track scroll position
+  // --- Step 1: Call ALL hooks unconditionally at the top ---
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  // State for mobile menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Effect to handle scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      // Set scrolled to true if user has scrolled more than 50px
       setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
-
-    // Cleanup function to remove the event listener
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // --- Step 2: Place the conditional return *after* all hooks ---
+  // This ensures hook order is the same on every render.
+  if (pathname === '/register') {
+    return null;
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

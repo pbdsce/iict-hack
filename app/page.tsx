@@ -2,6 +2,7 @@ import { Hero } from "@/components/landing/Hero";
 import { Timeline } from "@/components/landing/Timeline";
 import Themes from "@/components/landing/Themes";
 import Brief from "@/components/landing/FAQ";
+import SponsorsSection from "@/components/landing/Sponsors";
 import { SectionDecorations } from "@/components/ui/section-decorations";
 import { Footer } from "@/components/ui/footer";
 
@@ -20,7 +21,11 @@ export default function Home() {
         <SectionDecorations variant="timeline" />
         <Timeline/>
       </section>
-      <section id="faq" className="relative">
+      <section id="sponsors" className="relative">
+        <SectionDecorations variant="faq" />
+        <SponsorsSection />
+      </section>
+      <section id="faq" className="min-h-screen relative">
         <SectionDecorations variant="faq" />
         <Brief/>
       </section>

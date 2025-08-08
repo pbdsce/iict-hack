@@ -5,44 +5,34 @@ import { useState, useEffect, memo } from "react";
 
 const timelineEvents = [
   {
-    date: "Day 1 - 8:00 AM",
-    title: "Lorem Ipsum Dolor",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    date: "15th August • 9:00 AM",
+    title: "Registrations Open",
+    description: "Hackathon registrations go live.",
   },
   {
-    date: "Day 1 - 9:00 AM",
-    title: "Sed Do Eiusmod Tempor",
-    description: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    date: "29th August • 5:00 PM",
+    title: "Registrations Close",
+    description: "Last date and time to submit registrations.",
   },
   {
-    date: "Day 1 - 10:00 AM",
-    title: "Ut Enim Ad Minim",
-    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    date: "31st August • 5:00 PM",
+    title: "Shortlist Announced",
+    description: "Teams shortlisted for online rounds announced.",
   },
   {
-    date: "Day 1 - 2:00 PM",
-    title: "Duis Aute Irure Dolor",
-    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
+    date: "1st September • 9:00 AM",
+    title: "Online Round Begins",
+    description: "Kicks off the remote hackathon round.",
   },
   {
-    date: "Day 1 - 11:00 PM",
-    title: "Excepteur Sint Occaecat",
-    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+    date: "13th–14th September",
+    title: "Online Judging",
+    description: "Judging for online round; top 6 teams finalized.",
   },
   {
-    date: "Day 2 - 4:30 PM",
-    title: "At Vero Eos Et Accusamus",
-    description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.",
-  },
-  {
-    date: "Day 2 - 6:30 PM",
-    title: "Nam Libero Tempore",
-    description: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil.",
-  },
-  {
-    date: "Day 2 - 9:00 PM",
-    title: "Temporibus Autem Quibusdam",
-    description: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus.",
+    date: "28th September",
+    title: "Finale at IICT Workshop",
+    description: "Finalist teams present at the IICT Workshop.",
   },
 ];
 // Professional title component with updated accent color
@@ -58,9 +48,7 @@ const ProfessionalTitle = memo(() => {
   return (
     <div className="relative mb-12 md:mb-20">
       <motion.div {...baseAnimation} className="text-center">
-        <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#C83DAD] via-[#DE5FB9] to-[#F481C9] bg-clip-text text-transparent font-corsiva italic">
-          Event Timeline
-        </h2>
+        <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#C83DAD] via-[#DE5FB9] to-[#F481C9] bg-clip-text text-transparent font-corsiva italic">Event Timeline</h2>
         <div className="w-24 h-1 bg-gradient-to-r from-[#C83DAD] to-[#F481C9] mx-auto rounded-full"></div>
       </motion.div>
     </div>

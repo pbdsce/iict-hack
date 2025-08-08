@@ -89,14 +89,14 @@ export function Hero(){
               {/* Default Logo Image */}
               <Image 
                 src={defaults}
-                alt="HashBoot" 
+                alt="SegFault" 
                 className="w-full h-auto transition-opacity duration-500 ease-in-out"
                 style={{ opacity: isLogoHovered ? 0 : 1 }}
               />
               {/* Variant Logo Image (positioned absolutely on top) */}
               <Image 
                 src={variant}
-                alt="HashBoot Variant" 
+                alt="SegFault Variant" 
                 className="w-full h-auto absolute top-0 left-0 transition-opacity duration-500 ease-in-out"
                 style={{ opacity: isLogoHovered ? 1 : 0 }}
               />
@@ -110,8 +110,23 @@ export function Hero(){
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           >
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#C83DAD] mb-6 sm:mb-8 md:mb-10 font-corsiva italic px-4 leading-tight">
-              Boot Your Brain. Hash the Impossible.
+              Where Impossible is Just an Error Code.            
             </h1>
+            {/* IICT note (placed above the register button) */}
+            <p className="mx-auto max-w-3xl text-white/90 text-sm sm:text-base md:text-lg leading-relaxed px-4">
+              The <span className="font-semibold">SegFault Hackathon</span> is co-located and organized as a part of the
+              <span className="font-semibold"> Innovations In Compiler Technology (IICT)</span> Workshop. Check out the
+              {" "}
+              <a
+                href="https://compilertech.org/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-[#F481C9] underline underline-offset-4 hover:text-[#DE5FB9]"
+              >
+                IICT Website here
+              </a>
+              .
+            </p>
           </motion.div>
 
           {/* Enhanced description */}

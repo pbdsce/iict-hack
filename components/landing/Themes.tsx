@@ -9,46 +9,79 @@ interface Theme {
   description: string;
   fullDescription: string;
   technologies: string[];
-  difficulty: string;
 }
 
 const themes: Theme[] = [
   {
     id: 1,
-    title: "FinTech Innovation",
-    category: "Financial Technology",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-    fullDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    technologies: ["React", "Node.js", "Blockchain", "APIs"],
-    difficulty: "Intermediate"
+    title: "Domain Specific Compilers and Languages",
+    category: "DSLs",
+    description:
+      "Design and implement compilers and languages for specific applications or hardware.",
+    fullDescription:
+      "Design and Implementation of Compilers and Programming Languages for specific applications or hardware. Examples: Halide for computational photography, a programming language for drones, theorem prover languages.",
+    technologies: ["Compilers", "Programming Languages", "eDSLs"],
   },
   {
     id: 2,
-    title: "Healthcare Solutions",
-    category: "MedTech",
-    description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-    fullDescription: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
-    technologies: ["AI/ML", "Python", "IoT", "Data Analytics"],
-    difficulty: "Advanced"
+    title: "Compiler Frameworks and Tools",
+    category: "Frameworks",
+    description:
+      "Advancements in compiler infrastructure, IRs, program analysis, and transformation tools.",
+    fullDescription:
+      "Advancements in compiler infrastructure, intermediate representations, program analysis, and transformation tools. Examples: static analysis tools, debuggers, automated code formatting and review tools, coverage and profiling.",
+    technologies: [
+      "Tools",
+      "Static Analysis",
+      "Debugging",
+      "Formatting",
+      "Code Review",
+    ],
   },
   {
     id: 3,
-    title: "Sustainability Tech",
-    category: "CleanTech",
-    description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.",
-    fullDescription: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.",
-    technologies: ["IoT", "React", "Machine Learning", "APIs"],
-    difficulty: "Beginner"
+    title: "Compilers and AI/ML",
+    category: "AI/ML",
+    description:
+      "Using AI/ML to enhance compilers, and compiler tech for AI/ML workflows.",
+    fullDescription:
+      "Using AI/ML to enhance Compiler technology, and Compiler technology for AI/ML. Examples: LLM support for CFGs, AI-based tooling like CodeRabbit, GPT wrappers for compiler development.",
+    technologies: [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Domain Specific Compilers",
+    ],
   },
   {
     id: 4,
-    title: "EdTech Platform",
-    category: "Education Technology",
-    description: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime.",
-    fullDescription: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.",
-    technologies: ["Vue.js", "Firebase", "WebRTC", "Progressive Web Apps"],
-    difficulty: "Intermediate"
-  }
+    title: "Optimizing for the Real World",
+    category: "Optimization",
+    description:
+      "Use compiler techniques to make real-world software perform better and greener.",
+    fullDescription:
+      "Use Compiler Technology and techniques to make real world software perform better. Examples: Auto-tuning for heterogeneous systems, energy-efficient codegen, instruction-level optimization for edge processors.",
+    technologies: ["Auto tuning", "Energy efficient codegen", "Edge computing"],
+  },
+  {
+    id: 5,
+    title: "Explainable Compilers",
+    category: "Explainability",
+    description:
+      "Make compilers more transparent to developers with better tooling and visualizations.",
+    fullDescription:
+      "Modern compilers are complex software. Make them more transparent to developers. Examples: Visualising IR to ASM, debugging tools that show optimization decisions, interactive sites for compiler teaching.",
+    technologies: ["Explainability", "Teaching Compilers", "Visualisation"],
+  },
+  {
+    id: 6,
+    title: "Compilers for New Paradigms",
+    category: "New Paradigms",
+    description:
+      "Develop compilers or tooling for emerging paradigms and domains.",
+    fullDescription:
+      "Develop compilers or tooling for emerging paradigms. Examples: Compilers for eBPF or secure enclaves, Quantum IR-to-gate compilers, attack-surface reduction compilers.",
+    technologies: ["Quantum", "eBPF", "Security"],
+  },
 ];
 
 // Professional title component
@@ -68,8 +101,16 @@ const ProfessionalTitle = memo(() => {
           Hackathon Themes
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-[#C83DAD] to-[#F481C9] mx-auto rounded-full"></div>
-        <p className="mt-6 text-lg text-white/80 max-w-2xl mx-auto">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+        <p className="mt-6 text-lg text-white/80 max-w-3xl mx-auto">
+          <span className="font-semibold">Note:</span> The below themes are indicative only. They are meant to spark your creativity and give you a feel for what kind of projects you can build at this hackathon. We accept all kinds of projects broadly in the areas of Compilers, Programming Languages, Program Analysis, Tools and more. Go through the {" "}
+          <a
+            href="https://compilertech.org/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-[#F481C9] underline underline-offset-4 hover:text-[#DE5FB9]"
+          >
+            IICT Website
+          </a>.
         </p>
       </motion.div>
     </div>
@@ -110,7 +151,7 @@ const ThemeBox = memo(({
             <p className="text-white/90 leading-relaxed">{theme.fullDescription}</p>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-[#C83DAD] mb-2">Suggested Technologies</h4>
+            <h4 className="text-lg font-semibold text-[#C83DAD] mb-2">Suggested Areas</h4>
             <div className="flex flex-wrap gap-2">
               {theme.technologies.map((tech, index) => (
                 <span key={index} className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-md text-sm border border-white/20">
@@ -118,12 +159,6 @@ const ThemeBox = memo(({
                 </span>
               ))}
             </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold text-[#C83DAD] mb-2">Difficulty Level</h4>
-            <span className={`inline-block px-3 py-1 rounded-full text-sm ${ theme.difficulty === 'Beginner' ? 'bg-green-500 text-white' : theme.difficulty === 'Intermediate' ? 'bg-yellow-500 text-black' : 'bg-red-500 text-white' }`}>
-              {theme.difficulty}
-            </span>
           </div>
         </div>
       </motion.div>
@@ -139,9 +174,6 @@ const ThemeBox = memo(({
     >
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-xl font-bold text-white">{theme.title}</h3>
-        <span className={`inline-block px-2 py-1 rounded-full text-xs ${ theme.difficulty === 'Beginner' ? 'bg-green-500 text-white' : theme.difficulty === 'Intermediate' ? 'bg-yellow-500 text-black' : 'bg-red-500 text-white' }`}>
-          {theme.difficulty}
-        </span>
       </div>
       <span className="inline-block px-3 py-1 bg-[#C83DAD] text-white text-sm rounded-full mb-3">
         {theme.category}

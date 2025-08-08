@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Mail, Github, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Twitter, Linkedin, Globe } from 'lucide-react';
 
 
 export function Footer() {
@@ -26,16 +26,17 @@ export function Footer() {
     { name: "Home", href: "#home" },
     { name: "Themes", href: "#themes" },
     { name: "Timeline", href: "#timeline" },
+    { name: "Sponsors", href: "#sponsors" },
     { name: "FAQ", href: "#faq" },
     { name: "Register", href: "/register" }
   ];
 
+  // removed partners block per request
+
   const socialLinks = [
-    { icon: Mail, href: "mailto:contact@hashboot.dev", label: "Email" },
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" }
+    { icon: Mail, href: "mailto:ashutosh@compilertech.org", label: "Email" },
+    { icon: Twitter, href: "https://x.com/compiler_tech", label: "X (Twitter)" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/compiler-technology", label: "LinkedIn" }
   ];
 
   return (
@@ -60,14 +61,12 @@ export function Footer() {
             >
               <Image
                 src="/images/shortlogo.png"
-                alt="HashBoot Logo"
+                alt="SegFault Logo"
                 width={60}
                 height={60}
                 className="object-contain"
               />
-              <h3 className="text-2xl md:text-3xl font-bold text-white font-corsiva italic">
-                HashBoot
-              </h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-white font-corsiva italic">SEGFAULT</h3>
             </motion.div>
             
             <motion.p 
@@ -77,7 +76,7 @@ export function Footer() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-white/70 text-lg leading-relaxed font-inter max-w-md"
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              SEGFAULT Hackathon is co-located with the Innovations In Compiler Technology (IICT) Workshop. Learn more on the IICT site.
             </motion.p>
             
             <motion.div 
@@ -87,12 +86,14 @@ export function Footer() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-6 flex items-center gap-2 text-[#C540AB] font-inter"
             >
-              <Mail className="w-5 h-5" />
+              <Globe className="w-5 h-5" />
               <a 
-                href="mailto:contact@hashboot.dev" 
+                href="https://compilertech.org/" 
+                target="_blank"
+                rel="noreferrer noopener"
                 className="hover:text-[#E055C3] transition-colors duration-200"
               >
-                contact@hashboot.dev
+                Visit IICT Website
               </a>
             </motion.div>
           </div>
@@ -160,6 +161,7 @@ export function Footer() {
                 </motion.a>
               ))}
             </motion.div>
+            {/* empty space where partners were previously shown */}
           </div>
         </div>
 
@@ -171,15 +173,15 @@ export function Footer() {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="mt-12 pt-8 border-t border-gray-800/50 flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <p className="text-white/50 text-sm font-inter">
-            © 2024 HashBoot. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6 text-sm font-inter">
-            <a href="#" className="text-white/50 hover:text-[#C540AB] transition-colors duration-200">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-white/50 hover:text-[#C540AB] transition-colors duration-200">
-              Terms of Service
+          <div className="flex items-center text-white/50 text-sm font-inter">
+            <span>© 2025 SEGFAULT @ IICT.</span>
+          </div>
+          <div className="flex items-center gap-2 text-white/50 text-sm font-inter">
+            <span>Made with</span>
+            <span className="text-[#E255A1]" aria-hidden>❤</span>
+            <span>by</span>
+            <a href="https://pointblank.club" target="_blank" rel="noreferrer noopener" className="inline-flex items-center">
+              <Image src="https://www.pointblank.club/_next/static/media/logo.8d55ed6e.svg" alt="Point Blank" className="h-3 w-auto opacity-90 hover:opacity-100 transition-opacity" width={100} height={100} />
             </a>
           </div>
         </motion.div>

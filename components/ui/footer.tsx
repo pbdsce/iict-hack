@@ -62,9 +62,9 @@ export function Footer() {
               <Image
                 src="/images/shortlogo.png"
                 alt="SegFault Logo"
-                width={60}
-                height={60}
-                className="object-contain"
+                width={70}
+                height={70}
+                className="object-contain brightness-0 invert"
               />
               <h3 className="text-2xl md:text-3xl font-bold text-white font-corsiva italic">SEGFAULT</h3>
             </motion.div>

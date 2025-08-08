@@ -77,7 +77,7 @@ export default function AnimatedNavbar() {
           <Image 
             src={logo} 
             alt="Logo" 
-            className="h-10 w-auto" 
+            className="h-14 w-auto" 
           />
         </a>
 

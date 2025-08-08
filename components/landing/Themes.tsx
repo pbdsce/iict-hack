@@ -77,7 +77,7 @@ const themes: Theme[] = [
     title: "Compilers for New Paradigms",
     category: "New Paradigms",
     description:
-      "Develop compilers or tooling for emerging paradigms and domains.",
+      "Develop compilers or tooling for emerging paradigms and domains like quantum computing.",
     fullDescription:
       "Develop compilers or tooling for emerging paradigms. Examples: Compilers for eBPF or secure enclaves, Quantum IR-to-gate compilers, attack-surface reduction compilers.",
     technologies: ["Quantum", "eBPF", "Security"],

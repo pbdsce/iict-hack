@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Mail, Twitter, Linkedin, Globe } from 'lucide-react';
 
@@ -52,13 +51,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Logo and Description */}
           <div className="lg:col-span-2">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center gap-4 mb-6"
-            >
+            <div className="flex items-center gap-4 mb-6">
               <Image
                 src="/images/shortlogo.png"
                 alt="SegFault Logo"
@@ -67,25 +60,13 @@ export function Footer() {
                 className="object-contain brightness-0 invert"
               />
               <h3 className="text-2xl md:text-3xl font-bold text-white font-corsiva italic">SEGFAULT</h3>
-            </motion.div>
+            </div>
             
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-white/70 text-lg leading-relaxed font-inter max-w-md"
-            >
+            <p className="text-white/70 text-lg leading-relaxed font-inter max-w-md">
               SEGFAULT Hackathon is co-located with the Innovations In Compiler Technology (IICT) Workshop. Learn more on the IICT site.
-            </motion.p>
+            </p>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-6 flex items-center gap-2 text-[#C540AB] font-inter"
-            >
+            <div className="mt-6 flex items-center gap-2 text-[#C540AB] font-inter">
               <Globe className="w-5 h-5" />
               <a 
                 href="https://compilertech.org/" 
@@ -95,27 +76,15 @@ export function Footer() {
               >
                 Visit IICT Website
               </a>
-            </motion.div>
+            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <motion.h4 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-white font-semibold text-lg mb-6 font-inter"
-            >
+            <h4 className="text-white font-semibold text-lg mb-6 font-inter">
               Quick Links
-            </motion.h4>
-            <motion.ul 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-3"
-            >
+            </h4>
+            <ul className="space-y-3">
               {footerLinks.map((link, index) => (
                 <li key={index}>
                   <a
@@ -127,52 +96,32 @@ export function Footer() {
                   </a>
                 </li>
               ))}
-            </motion.ul>
+            </ul>
           </div>
 
           {/* Social Links */}
           <div>
-            <motion.h4 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-white font-semibold text-lg mb-6 font-inter"
-            >
+            <h4 className="text-white font-semibold text-lg mb-6 font-inter">
               Connect
-            </motion.h4>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex gap-4"
-            >
+            </h4>
+            <div className="flex gap-4">
               {socialLinks.map((social, index) => (
-                <motion.a
+                <a
                   key={index}
                   href={social.href}
                   aria-label={social.label}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 bg-gray-800/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white/70 hover:text-[#C540AB] hover:bg-[#C540AB]/10 hover:border-[#C540AB]/30 border border-gray-700/50 transition-all duration-200"
                 >
                   <social.icon className="w-5 h-5" />
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
+            </div>
             {/* empty space where partners were previously shown */}
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-12 pt-8 border-t border-gray-800/50 flex flex-col md:flex-row justify-between items-center gap-4"
-        >
+        <div className="mt-12 pt-8 border-t border-gray-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center text-white/50 text-sm font-inter">
             <span>© 2025 SEGFAULT @ IICT.</span>
           </div>
@@ -184,7 +133,7 @@ export function Footer() {
               <Image src="https://www.pointblank.club/_next/static/media/logo.8d55ed6e.svg" alt="Point Blank" className="h-3 w-auto opacity-90 hover:opacity-100 transition-opacity" width={100} height={100} />
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Decorative gradient line */}

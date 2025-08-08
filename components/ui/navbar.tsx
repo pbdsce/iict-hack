@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import logo from '@/public/images/shortlogo.png';
@@ -65,12 +65,12 @@ export default function AnimatedNavbar() {
 
   return (
     <>
-      <motion.nav
-        initial="top"
-        animate={scrolled ? 'scrolled' : 'top'}
-        variants={navVariants}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
+      <motion.nav 
         className="fixed left-1/2 -translate-x-1/2 z-50 flex justify-between items-center px-6 py-4"
+        variants={navVariants}
+        initial="top"
+        animate={scrolled ? "scrolled" : "top"}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         {/* Logo */}
         <a href="#" className="flex-shrink-0">
@@ -112,32 +112,21 @@ export default function AnimatedNavbar() {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-[#C83DAD] p-2">
-            <AnimatePresence mode="wait">
-              {isMenuOpen ? (
-                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-                  <X size={28} />
-                </motion.div>
-              ) : (
-                <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-                  <Menu size={28} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </button>
+          <motion.button 
+            onClick={toggleMenu} 
+            className="text-[#C83DAD] p-2"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </motion.button>
         </div>
       </motion.nav>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: '-50%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '-50%' }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-lg md:hidden"
-          >
+          <div className="fixed inset-0 z-40 bg-black/80 backdrop-blur-lg md:hidden">
             <div className="flex flex-col items-center justify-center h-full gap-8 pt-20">
               {navLinks.map((link) => (
                 <a
@@ -161,7 +150,7 @@ export default function AnimatedNavbar() {
                 </motion.button>
             </a>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>

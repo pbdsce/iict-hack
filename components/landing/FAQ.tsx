@@ -95,24 +95,13 @@ export default function FAQ() {
   };
 
   const faqList = (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={selectedSection}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        className="space-y-4"
-      >
-        {faqData[selectedSection].questions.map((item, index) => (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            key={index}
-            // Applying the "glass effect" to the FAQ item
-            className="border border-white/10 rounded-lg bg-black/40 backdrop-blur-md shadow-lg transition-all duration-300 hover:border-[#C83DAD] hover:shadow-xl hover:shadow-[#C83DAD]/30 group"
-          >
+    <div className="space-y-4">
+      {faqData[selectedSection].questions.map((item, index) => (
+        <div
+          key={index}
+          // Applying the "glass effect" to the FAQ item
+          className="border border-white/10 rounded-lg bg-black/40 backdrop-blur-md shadow-lg transition-all duration-300 hover:border-[#C83DAD] hover:shadow-xl hover:shadow-[#C83DAD]/30 group"
+        >
             <button
               onClick={() => toggleQuestion(`${selectedSection}-${index}`)}
               className="w-full py-6 px-6 flex justify-between items-center text-left text-white group-hover:text-[#C83DAD] transition-colors"
@@ -141,20 +130,15 @@ export default function FAQ() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
-    </AnimatePresence>
+      </div>
   );
 
   return (
     <section className="min-h-screen py-20 bg-black pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div>
           <div className="text-center mb-12 md:mb-20">
             <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#C83DAD] via-[#DE5FB9] to-[#F481C9] bg-clip-text text-transparent font-corsiva italic">
               Frequently Asked Questions
@@ -168,18 +152,15 @@ export default function FAQ() {
           {/* Mobile Tabs */}
           <div className="lg:hidden relative mb-8">
             <div className="flex overflow-x-auto px-4 sm:px-6 space-x-4 pb-4 no-scrollbar">
-              {menuItems.map((item, index) => (
-                <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+              {menuItems.map((item) => (
+                <button
                   key={item.id}
                   onClick={() => setSelectedSection(item.id)}
                   className={`flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-full border transition-all duration-300 ${ selectedSection === item.id ? 'bg-[#C83DAD]/10 text-[#C83DAD] border-[#C83DAD]' : 'text-gray-400 hover:text-white border-gray-700 hover:border-gray-600' }`}
                 >
                   <item.icon className="w-5 h-5" />
                   <span className="text-base font-medium">{item.label}</span>
-                </motion.button>
+                </button>
               ))}
             </div>
           </div>
@@ -188,18 +169,15 @@ export default function FAQ() {
           <div className="hidden lg:grid lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start">
               <div className="space-y-4">
-                {menuItems.map((item, index) => (
-                  <motion.button
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                {menuItems.map((item) => (
+                  <button
                     key={item.id}
                     onClick={() => setSelectedSection(item.id)}
                     className={`w-full text-left py-5 border-b-2 transition-all duration-300 flex items-center gap-4 hover:pl-2 ${ selectedSection === item.id ? 'border-[#C83DAD] text-[#C83DAD]' : 'border-gray-700 text-gray-400 hover:text-white hover:border-gray-600' }`}
                   >
                     <item.icon className="w-6 h-6" />
                     <span className="text-xl tracking-wider font-medium">{item.label}</span>
-                  </motion.button>
+                  </button>
                 ))}
               </div>
             </div>
@@ -212,7 +190,7 @@ export default function FAQ() {
           <div className="lg:hidden">
             {faqList}
           </div>
-        </motion.div>
+        </div>
       </div>
        {/* CSS to hide scrollbar, as inline style might not be supported everywhere */}
       <style jsx global>{`

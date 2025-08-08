@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect, memo } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Theme {
   id: number;
@@ -86,17 +86,9 @@ const themes: Theme[] = [
 
 // Professional title component
 const ProfessionalTitle = memo(() => {
-  const shouldReduceMotion = useReducedMotion();
-  const baseAnimation = shouldReduceMotion ? {} : {
-    initial: { opacity: 0, transform: 'translateY(20px)' },
-    whileInView: { opacity: 1, transform: 'translateY(0)' },
-    viewport: { once: true, margin: "-50px" },
-    transition: { duration: 0.6 }
-  };
-  
   return (
     <div className="relative mb-12 md:mb-20">
-      <motion.div {...baseAnimation} className="text-center">
+      <div className="text-center">
         <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#C83DAD] via-[#DE5FB9] to-[#F481C9] bg-clip-text text-transparent font-corsiva italic">
           Hackathon Themes
         </h2>
@@ -112,7 +104,7 @@ const ProfessionalTitle = memo(() => {
             IICT Website
           </a>.
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 });
@@ -124,14 +116,9 @@ const ThemeBox = memo(({
 }: {
   theme: Theme; isExpanded: boolean; isFaded: boolean; onExpand: () => void; onClose: () => void;
 }) => {
-  const shouldReduceMotion = useReducedMotion();
-
   if (isExpanded) {
     return (
       <motion.div
-        initial={shouldReduceMotion ? {} : { scale: 0.9, opacity: 0 }}
-        animate={shouldReduceMotion ? {} : { scale: 1, opacity: 1 }}
-        exit={shouldReduceMotion ? {} : { scale: 0.9, opacity: 0 }}
         className="bg-black/50 backdrop-blur-lg rounded-lg border border-white/20 shadow-xl shadow-[#C83DAD]/20 p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
       >
         <div className="flex justify-between items-start mb-6">
@@ -169,8 +156,6 @@ const ThemeBox = memo(({
     <motion.div
       className={`bg-white/10 backdrop-blur-md rounded-lg border border-white/10 shadow-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-[#C83DAD]/30 hover:border-[#C83DAD]/60 hover:bg-white/20 ${ isFaded ? 'opacity-40' : 'opacity-100' }`}
       onClick={onExpand}
-      whileHover={shouldReduceMotion ? {} : { y: -5 }}
-      whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
     >
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-xl font-bold text-white">{theme.title}</h3>
@@ -226,19 +211,9 @@ function Themes() {
     <section className="py-20 bg-black" id="themes">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ProfessionalTitle />
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, staggerChildren: 0.1 }}
-        >
-          {themes.map((theme, index) => (
-            <motion.div
-              key={theme.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 + 0.5 }}
-            >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {themes.map((theme) => (
+            <div key={theme.id}>
               <ThemeBox 
                 theme={theme}
                 isExpanded={false}
@@ -246,9 +221,9 @@ function Themes() {
                 onExpand={() => handleExpand(theme.id)}
                 onClose={handleClose}
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
         
         <AnimatePresence>
           {expandedId !== null && (

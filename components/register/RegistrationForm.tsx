@@ -390,14 +390,7 @@ export default function RegistrationForm() {
             {/* Form Content */}
 {step < 4 ? (
   <form onSubmit={handleSubmit} onKeyDown={handleEnter} noValidate className="space-y-8">
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={step}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        transition={{ duration: 0.3 }}
-      >
+    <div key={step}>
         {/* Step 0: Team Info */}
         {step === 0 && <TeamInfoStep onNext={handleNext} />}
 
@@ -424,26 +417,17 @@ export default function RegistrationForm() {
             onBack={handleBack}
           />
         )}
-      </motion.div>
-    </AnimatePresence>
+      </div>
   </form>
 ) : (
-  <AnimatePresence mode="wait">
-    <motion.div
-      key={step}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.3 }}
-    >
+  <div key={step}>
       <RegistrationCompletedStep
         onStartOver={() => {
           resetForm();
           router.push("/register");
         }}
       />
-    </motion.div>
-  </AnimatePresence>
+    </div>
 )}
 
           </div>

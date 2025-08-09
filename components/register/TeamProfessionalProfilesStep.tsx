@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useRegistrationStore } from "@/lib/registrationStore";
 import { Button } from "@/components/ui/button";
@@ -144,15 +143,7 @@ export default function TeamProfessionalProfilesStep({ onNext, onBack }: TeamPro
       </div>
 
       {/* Professional Profiles Form */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-          className="space-y-6"
-        >
+      <div key={currentIndex} className="space-y-6">
           {/* GitHub Profile */}
           <div className="space-y-2">
             <Label htmlFor={`github-${currentIndex}`} className="text-base sm:text-lg font-medium text-white flex items-center space-x-2">
@@ -275,8 +266,7 @@ export default function TeamProfessionalProfilesStep({ onNext, onBack }: TeamPro
               </div>
             </div>
           )}
-        </motion.div>
-      </AnimatePresence>
+        </div>
 
       {/* Navigation */}
       <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 pt-4 sm:pt-6">

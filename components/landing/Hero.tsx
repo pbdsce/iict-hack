@@ -77,11 +77,12 @@ export function Hero(){
               <motion.button 
                 className="px-6 sm:px-8 py-3 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-300 font-inter
                            bg-white/10 backdrop-blur-md border border-white/20 shadow-lg
-                           hover:bg-white/20 hover:shadow-xl w-full sm:w-auto max-w-xs sm:max-w-none mx-auto"
+                           hover:bg-white/20 hover:shadow-xl w-full sm:w-auto max-w-xs sm:max-w-none mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                disabled={true}
               >
-                Register For Hackathon
+                Registrations opening on 15th August
               </motion.button>
             </a>
           </div>

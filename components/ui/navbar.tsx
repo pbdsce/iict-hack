@@ -101,9 +101,10 @@ export default function AnimatedNavbar() {
                 <motion.button
                     className="px-6 py-2 text-white font-bold text-base rounded-full transition-all duration-300
                             bg-[#C83DAD] shadow-lg shadow-[#C83DAD]/30
-                            hover:bg-[#A12A89] hover:shadow-xl hover:shadow-[#C83DAD]/40"
+                            hover:bg-[#A12A89] hover:shadow-xl hover:shadow-[#C83DAD]/40 disabled:opacity-50 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    disabled={true}
                 >
                     Register
                 </motion.button>

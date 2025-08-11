@@ -1,17 +1,12 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware() {
-  // Registration is now open for development
-  // Removed redirect from /register to allow access
-  
-  // If you need to restrict registration in the future, uncomment the lines below:
-  // if (request.nextUrl.pathname === '/register') {
-  //   return NextResponse.redirect(new URL('/', request.url))
-  // }
-  
-  return NextResponse.next()
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === "/register") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 }
 
 export const config = {
-  matcher: '/register'
-}
+  matcher: "/register",
+};

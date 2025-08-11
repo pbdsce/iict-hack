@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import defaults from '@/public/images/default.svg';
-import variant from '@/public/images/variant.svg';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import defaults from "@/public/images/default.svg";
+import variant from "@/public/images/variant.svg";
 
 // Animation variants removed for better performance on slow systems
 
-export function Hero(){
+export function Hero() {
   // State to manage the hover effect for the logo
   const [isLogoHovered, setIsLogoHovered] = useState(false);
 
@@ -20,38 +20,42 @@ export function Hero(){
           {/* Logo */}
           <div className="flex justify-center items-center">
             {/* Logo container with state-based hover events */}
-            <div 
+            <div
               className="relative w-[60rem] -mb-10"
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
             >
               {/* Default Logo Image */}
-              <Image 
+              <Image
                 src={defaults}
-                alt="SegFault" 
+                alt="SegFault"
                 className="w-full h-auto transition-opacity duration-500 ease-in-out"
                 style={{ opacity: isLogoHovered ? 0 : 1 }}
               />
               {/* Variant Logo Image (positioned absolutely on top) */}
-              <Image 
+              <Image
                 src={variant}
-                alt="SegFault Variant" 
+                alt="SegFault Variant"
                 className="w-full h-auto absolute top-0 left-0 transition-opacity duration-500 ease-in-out"
                 style={{ opacity: isLogoHovered ? 1 : 0 }}
               />
             </div>
           </div>
-          
+
           {/* Slogan with updated accent color */}
           <div className="mt-10 sm:mt-8 md:mt-10">
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#C83DAD] mb-6 sm:mb-8 md:mb-10 font-corsiva italic px-4 leading-tight">
-              Where Impossible is Just an Error Code.            
+              Where Impossible is Just an Error Code.
             </h1>
             {/* IICT note (placed above the register button) */}
             <p className="mx-auto max-w-3xl text-white/90 text-sm sm:text-base md:text-lg leading-relaxed px-4">
-              The <span className="font-semibold">SegFault Hackathon</span> is co-located and organized as a part of the
-              <span className="font-semibold"> Innovations In Compiler Technology (IICT)</span> Workshop. Check out the
-              {" "}
+              The <span className="font-semibold">SegFault Hackathon</span> is
+              co-located and organized as a part of the
+              <span className="font-semibold">
+                {" "}
+                Innovations In Compiler Technology (IICT)
+              </span>{" "}
+              Workshop. Check out the{" "}
               <a
                 href="https://compilertech.org/"
                 target="_blank"
@@ -74,15 +78,15 @@ export function Hero(){
           {/* Register Button with white glass effect */}
           <div className="mt-6 sm:mt-8 md:mt-10 px-4">
             <a href="/register">
-              <motion.button 
+              <motion.button
                 className="px-6 sm:px-8 py-3 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-300 font-inter
                            bg-white/10 backdrop-blur-md border border-white/20 shadow-lg
                            hover:bg-white/20 hover:shadow-xl w-full sm:w-auto max-w-xs sm:max-w-none mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                disabled={false}
+                disabled={true}
               >
-                Register Now
+                Registrations opening on 15th August
               </motion.button>
             </a>
           </div>

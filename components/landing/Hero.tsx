@@ -80,9 +80,9 @@ export function Hero(){
                            hover:bg-white/20 hover:shadow-xl w-full sm:w-auto max-w-xs sm:max-w-none mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                disabled={true}
+                disabled={false}
               >
-                Registrations opening on 15th August
+                Register Now
               </motion.button>
             </a>
           </div>

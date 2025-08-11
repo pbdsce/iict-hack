@@ -104,7 +104,7 @@ export default function AnimatedNavbar() {
                             hover:bg-[#A12A89] hover:shadow-xl hover:shadow-[#C83DAD]/40 disabled:opacity-50 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    disabled={true}
+                    disabled={false}
                 >
                     Register
                 </motion.button>

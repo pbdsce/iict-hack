@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB, College, sanitizeRegexInput } from "@/lib/database";
+import { validationRateLimit } from "@/lib/rateLimiter";
 
 // Interface definitions
 interface Participant {
@@ -73,6 +74,12 @@ const createCustomColleges = async (collegeNames: string[]) => {
 };
 
 export async function POST(request: Request) {
+  // Apply rate limiting for validation requests
+  const rateLimitResponse = await validationRateLimit(request);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     const data = await request.json();
     const { step } = data;

@@ -1,32 +1,42 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle, Calendar, MapPin, Users, Heart } from "lucide-react";
+import { CheckCircle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface RegistrationCompletedStepProps {
   onStartOver?: () => void;
 }
 
-export default function RegistrationCompletedStep({ onStartOver }: RegistrationCompletedStepProps) {
+export default function RegistrationCompletedStep({
+  onStartOver,
+}: RegistrationCompletedStepProps) {
   // const handleDiscordJoin = () => {
   //   window.open("https://discord.gg/your-discord-invite", "_blank");
   // };
 
-  const handleCalendarAdd = () => {
-    // Create calendar event
-    const event = {
-      title: "IICT Hackathon 2024",
-      start: "2024-02-15T09:00:00",
-      end: "2024-02-17T18:00:00",
-      description: "IICT Hackathon - Innovation starts here!",
-      location: "IICT Campus, Hyderabad"
-    };
-    
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start.replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z/${event.end.replace(/[-:]/g, '').replace(/\.\d{3}/, '')}Z&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`;
-    
-    window.open(googleCalendarUrl, "_blank");
-  };
+  // const handleCalendarAdd = () => {
+  //   // Create calendar event
+  //   const event = {
+  //     title: "IICT Hackathon 2025",
+  //     start: "2025-02-15T09:00:00",
+  //     end: "2025-02-17T18:00:00",
+  //     description: "IICT Hackathon - Innovation starts here!",
+  //     location: "IICT Campus, Hyderabad",
+  //   };
+
+  //   const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+  //     event.title
+  //   )}&dates=${event.start
+  //     .replace(/[-:]/g, "")
+  //     .replace(/\.\d{3}/, "")}Z/${event.end
+  //     .replace(/[-:]/g, "")
+  //     .replace(/\.\d{3}/, "")}Z&details=${encodeURIComponent(
+  //     event.description
+  //   )}&location=${encodeURIComponent(event.location)}`;
+
+  //   window.open(googleCalendarUrl, "_blank");
+  // };
 
   return (
     <div className="max-w-4xl mx-auto px-4">
@@ -54,12 +64,13 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
           transition={{ delay: 0.4 }}
           className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 px-4 sm:px-0"
         >
-          Welcome to IICT Hackathon 2024! Your team has been successfully registered.
+          Welcome to IICT Hackathon 2025! Your team has been successfully
+          registered.
         </motion.p>
       </motion.div>
 
       {/* Event Details Card */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
@@ -69,38 +80,50 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
           <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-[#C540AB]" />
           Event Details
         </h3>
-        
+
         <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-start gap-3 text-gray-300">
               <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-[#C540AB] mt-1 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-white text-sm sm:text-base">Date & Time</p>
-                <p className="text-sm sm:text-base">February 15-17, 2024</p>
-                <p className="text-xs sm:text-sm text-gray-400">9:00 AM - 6:00 PM</p>
+                <p className="font-semibold text-white text-sm sm:text-base">
+                  Date & Time
+                </p>
+                <p className="text-sm sm:text-base">February 15-17, 2025</p>
+                <p className="text-xs sm:text-sm text-gray-400">
+                  9:00 AM - 6:00 PM
+                </p>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-3 text-gray-300">
               <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-[#C540AB] mt-1 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-white text-sm sm:text-base">Venue</p>
+                <p className="font-semibold text-white text-sm sm:text-base">
+                  Venue
+                </p>
                 <p className="text-sm sm:text-base">IICT Campus, Hyderabad</p>
-                <p className="text-xs sm:text-sm text-gray-400">Tarnaka, Hyderabad - 500007</p>
+                <p className="text-xs sm:text-sm text-gray-400">
+                  Tarnaka, Hyderabad - 500007
+                </p>
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-start gap-3 text-gray-300">
               <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#C540AB] mt-1 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-white text-sm sm:text-base">Team Size</p>
+                <p className="font-semibold text-white text-sm sm:text-base">
+                  Team Size
+                </p>
                 <p className="text-sm sm:text-base">1-4 members per team</p>
-                <p className="text-xs sm:text-sm text-gray-400">Individual participation allowed</p>
+                <p className="text-xs sm:text-sm text-gray-400">
+                  Individual participation allowed
+                </p>
               </div>
             </div>
-            
+
             <Button
               onClick={handleCalendarAdd}
               className="w-full bg-[#C540AB] hover:bg-[#A333A3] text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-200 text-sm sm:text-base"
@@ -109,7 +132,7 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
             </Button>
           </div>
         </div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Discord & Community
       <motion.div
@@ -209,13 +232,13 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
       >
         <div className="flex items-center justify-center gap-2 text-gray-400 text-sm sm:text-base">
           <span>Built by</span>
-          <a 
-        href="https://www.pointblank.club/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="font-bold text-[#C540AB] hover:text-[#A333A3] transition-colors duration-200"
+          <a
+            href="https://www.pointblank.club/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-[#C540AB] hover:text-[#A333A3] transition-colors duration-200"
           >
-        Point Blank
+            Point Blank
           </a>
           <span>with</span>
           <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500 fill-current" />
@@ -241,4 +264,4 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
       )}
     </div>
   );
-} 
+}

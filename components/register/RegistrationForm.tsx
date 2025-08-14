@@ -30,7 +30,7 @@ const steps = [
   {
     id: 4,
     title: "Registration Complete",
-    description: "Welcome to IICT Hackathon 2024!",
+    description: "Welcome to IICT Hackathon 2025!",
   },
 ];
 

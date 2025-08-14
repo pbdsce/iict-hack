@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB, College, sanitizeRegexInput } from "@/lib/database";
+import { connectDB, College, TeamRegistration, sanitizeRegexInput } from "@/lib/database";
 import { validationRateLimit } from "@/lib/rateLimiter";
 
 // Interface definitions
@@ -94,6 +94,20 @@ export async function POST(request: Request) {
         if (!teamName?.trim()) {
           errors.teamName = "Team name is required";
           isValid = false;
+        } else {
+          // Connect to database to check for duplicate team names
+          await connectDB();
+          
+          // Check if team name already exists
+          const safeTeamName = sanitizeRegexInput(teamName.trim());
+          const existingTeam = await TeamRegistration.findOne({
+            team_name: { $regex: `^${safeTeamName}$`, $options: "i" },
+          });
+
+          if (existingTeam) {
+            errors.teamName = "Team name already exists. Please choose a different name.";
+            isValid = false;
+          }
         }
 
         if (!teamSize || teamSize < 1 || teamSize > 4) {

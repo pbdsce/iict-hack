@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: 18.x
+      REDIS_URL: ${{ secrets.REDIS_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

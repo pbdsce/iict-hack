@@ -46,39 +46,46 @@ try {
 
 // Rate limiter configuration
 const rateLimiterConfig = {
-  // General API requests - 100 requests per 15 minutes per IP
+  // General API requests - 500 requests per 15 minutes per IP
   general: {
-    points: 100,
+    points: 500,
     duration: 900, // 15 minutes
-    blockDuration: 900,
+    blockDuration: 300, // 5 minutes
   },
 
-  // File upload operations - 5 uploads per hour per IP
+  // File upload operations - 50 uploads per hour per IP
   fileUpload: {
-    points: 10,
-    duration: 3600, // 1 hour
-    blockDuration: 3600,
-  },
-
-  // Team registration - 10 registrations per hour per IP (increased for testing)
-  teamRegistration: {
-    points: 10,
-    duration: 3600, // 1 hour
-    blockDuration: 1800, // 30 minutes block instead of 1 hour
-  },
-
-  // College creation - 10 colleges per hour per IP
-  collegeCreation: {
-    points: 10,
+    points: 50,
     duration: 3600, // 1 hour
     blockDuration: 1800, // 30 minutes
   },
 
-  // Validation requests - 50 per 10 minutes per IP
-  validation: {
+  // Team registration submissions only - actual form submissions
+  teamRegistration: {
+    points: 20,
+    duration: 3600, // 1 hour
+    blockDuration: 900, // 15 minutes block
+  },
+
+  // Team registration page access - viewing/validating the form
+  teamRegistrationAccess: {
+    points: 200,
+    duration: 900, // 15 minutes
+    blockDuration: 300, // 5 minutes
+  },
+
+  // College creation - 50 colleges per hour per IP
+  collegeCreation: {
     points: 50,
+    duration: 3600, // 1 hour
+    blockDuration: 900, // 15 minutes
+  },
+
+  // Validation requests - 200 per 10 minutes per IP
+  validation: {
+    points: 200,
     duration: 600, // 10 minutes
-    blockDuration: 600,
+    blockDuration: 300, // 5 minutes
   },
 };
 
@@ -100,6 +107,7 @@ const rateLimiters = {
   general: createRateLimiter(rateLimiterConfig.general),
   fileUpload: createRateLimiter(rateLimiterConfig.fileUpload),
   teamRegistration: createRateLimiter(rateLimiterConfig.teamRegistration),
+  teamRegistrationAccess: createRateLimiter(rateLimiterConfig.teamRegistrationAccess),
   collegeCreation: createRateLimiter(rateLimiterConfig.collegeCreation),
   validation: createRateLimiter(rateLimiterConfig.validation),
 };
@@ -201,7 +209,7 @@ export function createRateLimitMiddleware(
       const response = NextResponse.json(
         {
           status: "error",
-          message: "Too many requests. Please try again later.",
+          message: `Too many registration attempts. Please try again in ${Math.round(msBeforeNext / 60000)} minutes.`,
           error: "Rate limit exceeded",
           details: {
             limit: limiter.points,
@@ -235,6 +243,8 @@ export const generalRateLimit = createRateLimitMiddleware("general");
 export const fileUploadRateLimit = createRateLimitMiddleware("fileUpload");
 export const teamRegistrationRateLimit =
   createRateLimitMiddleware("teamRegistration");
+export const teamRegistrationAccessRateLimit =
+  createRateLimitMiddleware("teamRegistrationAccess");
 export const collegeCreationRateLimit =
   createRateLimitMiddleware("collegeCreation");
 export const validationRateLimit = createRateLimitMiddleware("validation");

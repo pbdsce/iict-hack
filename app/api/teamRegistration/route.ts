@@ -5,7 +5,7 @@ import {
   sanitizeRegexInput,
 } from "@/lib/database";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { teamRegistrationRateLimit, generalRateLimit } from "@/lib/rateLimiter";
+import { teamRegistrationRateLimit, teamRegistrationAccessRateLimit } from "@/lib/rateLimiter";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
@@ -455,8 +455,8 @@ export async function POST(request: Request) {
 
 // GET endpoint to check team name availability
 export async function GET(request: Request) {
-  // Apply rate limiting for general requests
-  const rateLimitResponse = await generalRateLimit(request);
+  // Apply rate limiting for team registration access (form interactions)
+  const rateLimitResponse = await teamRegistrationAccessRateLimit(request);
   if (rateLimitResponse) {
     return rateLimitResponse;
   }

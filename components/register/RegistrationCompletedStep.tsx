@@ -148,7 +148,7 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
         </div>
       </motion.div> */}
 
-      {/* Important Instructions */}
+      {/* Important Instructions
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -198,7 +198,7 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
             </div>
           </div>
         </div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Built by Point Blank */}
       <motion.div

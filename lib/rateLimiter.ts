@@ -60,11 +60,11 @@ const rateLimiterConfig = {
     blockDuration: 3600,
   },
 
-  // Team registration - 3 registrations per hour per IP
+  // Team registration - 10 registrations per hour per IP (increased for testing)
   teamRegistration: {
-    points: 3,
+    points: 10,
     duration: 3600, // 1 hour
-    blockDuration: 3600,
+    blockDuration: 1800, // 30 minutes block instead of 1 hour
   },
 
   // College creation - 10 colleges per hour per IP
@@ -137,6 +137,11 @@ function getClientIP(request: NextRequest): string {
     return cfConnectingIP;
   }
 
+  // Development fallback - use localhost IP for development
+  if (process.env.NODE_ENV === "development") {
+    return "127.0.0.1";
+  }
+
   // Production fallback - throw error if no valid IP found
   throw new Error("Unable to determine client IP address for rate limiting");
 }
@@ -156,17 +161,25 @@ export function createRateLimitMiddleware(
     let clientIP: string;
     try {
       clientIP = getClientIP(nextRequest);
+      console.log(`Rate limiter: Client IP detected: ${clientIP}`);
     } catch (error) {
-      // If IP detection fails, reject the request for security
-      console.error("Rate limiter: Unable to determine client IP:", error);
-      return NextResponse.json(
-        {
-          status: "error",
-          message: "Unable to process request",
-          error: "IP detection failed",
-        },
-        { status: 400 }
-      );
+      // If IP detection fails in development, use a default IP
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Rate limiter: Using default IP for development:", error);
+        clientIP = "127.0.0.1";
+      } else {
+        // If IP detection fails in production, reject the request for security
+        console.error("Rate limiter: Unable to determine client IP:", error);
+        console.error("Request headers:", Object.fromEntries(nextRequest.headers.entries()));
+        return NextResponse.json(
+          {
+            status: "error",
+            message: "Unable to process request",
+            error: "IP detection failed",
+          },
+          { status: 400 }
+        );
+      }
     }
 
     try {
@@ -288,5 +301,31 @@ export async function checkRateLimit(
       resetTime: null,
       error: "Rate limit service unavailable",
     };
+  }
+}
+
+// Emergency function to reset rate limits for a specific IP (for testing only)
+export async function resetRateLimit(
+  limiterType: keyof typeof rateLimiters,
+  request: NextRequest | Request
+) {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("Rate limit reset is not allowed in production");
+  }
+
+  const limiter = rateLimiters[limiterType];
+  const nextRequest =
+    request instanceof Request
+      ? new NextRequest(request.url, request)
+      : request;
+
+  try {
+    const clientIP = getClientIP(nextRequest);
+    await limiter.delete(clientIP);
+    console.log(`Rate limit reset for IP: ${clientIP}, limiter: ${limiterType}`);
+    return true;
+  } catch (error) {
+    console.error("Failed to reset rate limit:", error);
+    return false;
   }
 }

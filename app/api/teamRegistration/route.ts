@@ -5,6 +5,10 @@ import {
   sanitizeRegexInput,
 } from "@/lib/database";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import {
+  teamRegistrationRateLimit,
+  teamRegistrationAccessRateLimit,
+} from "@/lib/rateLimiter";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
@@ -122,6 +126,12 @@ const parseForm = async (
 };
 
 export async function POST(request: Request) {
+  // Apply rate limiting for team registration
+  const rateLimitResponse = await teamRegistrationRateLimit(request);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     // Connect to database
     await connectDB();
@@ -448,6 +458,12 @@ export async function POST(request: Request) {
 
 // GET endpoint to check team name availability
 export async function GET(request: Request) {
+  // Apply rate limiting for team registration access (form interactions)
+  const rateLimitResponse = await teamRegistrationAccessRateLimit(request);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   const { searchParams } = new URL(request.url);
   const teamName = searchParams.get("team_name");
 

@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import { connectDB, College, sanitizeRegexInput } from "@/lib/database";
+import { generalRateLimit, collegeCreationRateLimit } from "@/lib/rateLimiter";
 
 export async function GET(request: Request) {
+  // Apply rate limiting
+  const rateLimitResponse = await generalRateLimit(request);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     await connectDB();
 
@@ -44,6 +51,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  // Apply rate limiting for college creation
+  const rateLimitResponse = await collegeCreationRateLimit(request);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     await connectDB();
 

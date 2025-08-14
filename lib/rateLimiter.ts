@@ -62,9 +62,9 @@ const rateLimiterConfig = {
 
   // Team registration submissions only - actual form submissions
   teamRegistration: {
-    points: 20,
+    points: process.env.NODE_ENV === "development" ? 100 : 20, // Higher limit for development
     duration: 3600, // 1 hour
-    blockDuration: 900, // 15 minutes block
+    blockDuration: process.env.NODE_ENV === "development" ? 60 : 900, // 1 minute block for development
   },
 
   // Team registration page access - viewing/validating the form
@@ -107,7 +107,9 @@ const rateLimiters = {
   general: createRateLimiter(rateLimiterConfig.general),
   fileUpload: createRateLimiter(rateLimiterConfig.fileUpload),
   teamRegistration: createRateLimiter(rateLimiterConfig.teamRegistration),
-  teamRegistrationAccess: createRateLimiter(rateLimiterConfig.teamRegistrationAccess),
+  teamRegistrationAccess: createRateLimiter(
+    rateLimiterConfig.teamRegistrationAccess
+  ),
   collegeCreation: createRateLimiter(rateLimiterConfig.collegeCreation),
   validation: createRateLimiter(rateLimiterConfig.validation),
 };
@@ -178,7 +180,10 @@ export function createRateLimitMiddleware(
       } else {
         // If IP detection fails in production, reject the request for security
         console.error("Rate limiter: Unable to determine client IP:", error);
-        console.error("Request headers:", Object.fromEntries(nextRequest.headers.entries()));
+        console.error(
+          "Request headers:",
+          Object.fromEntries(nextRequest.headers.entries())
+        );
         return NextResponse.json(
           {
             status: "error",
@@ -209,7 +214,9 @@ export function createRateLimitMiddleware(
       const response = NextResponse.json(
         {
           status: "error",
-          message: `Too many registration attempts. Please try again in ${Math.round(msBeforeNext / 60000)} minutes.`,
+          message: `Too many registration attempts. Please try again in ${Math.round(
+            msBeforeNext / 60000
+          )} minutes.`,
           error: "Rate limit exceeded",
           details: {
             limit: limiter.points,
@@ -243,8 +250,9 @@ export const generalRateLimit = createRateLimitMiddleware("general");
 export const fileUploadRateLimit = createRateLimitMiddleware("fileUpload");
 export const teamRegistrationRateLimit =
   createRateLimitMiddleware("teamRegistration");
-export const teamRegistrationAccessRateLimit =
-  createRateLimitMiddleware("teamRegistrationAccess");
+export const teamRegistrationAccessRateLimit = createRateLimitMiddleware(
+  "teamRegistrationAccess"
+);
 export const collegeCreationRateLimit =
   createRateLimitMiddleware("collegeCreation");
 export const validationRateLimit = createRateLimitMiddleware("validation");
@@ -324,15 +332,31 @@ export async function resetRateLimit(
   }
 
   const limiter = rateLimiters[limiterType];
-  const nextRequest =
-    request instanceof Request
-      ? new NextRequest(request.url, request)
-      : request;
 
+  // Convert Request to NextRequest if needed to avoid body consumption issues
+  let clientIP: string;
   try {
-    const clientIP = getClientIP(nextRequest);
+    if (request instanceof NextRequest) {
+      clientIP = getClientIP(request);
+    } else {
+      // Create a new NextRequest without consuming the original request
+      const url = request.url || "http://localhost:3000";
+      const method = request.method || "GET";
+      const headers = new Headers();
+
+      // Copy headers without consuming the body
+      request.headers.forEach((value, key) => {
+        headers.set(key, value);
+      });
+
+      const newRequest = new NextRequest(url, { method, headers });
+      clientIP = getClientIP(newRequest);
+    }
+
     await limiter.delete(clientIP);
-    console.log(`Rate limit reset for IP: ${clientIP}, limiter: ${limiterType}`);
+    console.log(
+      `Rate limit reset for IP: ${clientIP}, limiter: ${limiterType}`
+    );
     return true;
   } catch (error) {
     console.error("Failed to reset rate limit:", error);

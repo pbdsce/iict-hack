@@ -5,7 +5,10 @@ import {
   sanitizeRegexInput,
 } from "@/lib/database";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { teamRegistrationRateLimit, teamRegistrationAccessRateLimit } from "@/lib/rateLimiter";
+import {
+  teamRegistrationRateLimit,
+  teamRegistrationAccessRateLimit,
+} from "@/lib/rateLimiter";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
@@ -123,11 +126,23 @@ const parseForm = async (
 };
 
 export async function POST(request: Request) {
+  // Log the incoming request for debugging
+  console.log(
+    `[${new Date().toISOString()}] POST /api/teamRegistration - New request received`
+  );
+
   // Apply rate limiting for team registration
   const rateLimitResponse = await teamRegistrationRateLimit(request);
   if (rateLimitResponse) {
+    console.log(
+      `[${new Date().toISOString()}] POST /api/teamRegistration - Rate limit exceeded`
+    );
     return rateLimitResponse;
   }
+
+  console.log(
+    `[${new Date().toISOString()}] POST /api/teamRegistration - Rate limit passed, processing request`
+  );
 
   try {
     // Connect to database
@@ -455,11 +470,23 @@ export async function POST(request: Request) {
 
 // GET endpoint to check team name availability
 export async function GET(request: Request) {
+  // Log the incoming request for debugging
+  console.log(
+    `[${new Date().toISOString()}] GET /api/teamRegistration - New request received`
+  );
+
   // Apply rate limiting for team registration access (form interactions)
   const rateLimitResponse = await teamRegistrationAccessRateLimit(request);
   if (rateLimitResponse) {
+    console.log(
+      `[${new Date().toISOString()}] GET /api/teamRegistration - Rate limit exceeded`
+    );
     return rateLimitResponse;
   }
+
+  console.log(
+    `[${new Date().toISOString()}] GET /api/teamRegistration - Rate limit passed, processing request`
+  );
 
   const { searchParams } = new URL(request.url);
   const teamName = searchParams.get("team_name");

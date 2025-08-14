@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/rateLimiter";
+import { checkRateLimit, resetRateLimit } from "@/lib/rateLimiter";
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,12 +24,61 @@ export async function GET(request: NextRequest) {
       rateLimitStatus,
       environment: process.env.NODE_ENV,
       redisConfigured: !!process.env.REDIS_URL,
+      message:
+        "Use POST /api/debug-rate-limit to reset rate limits in development",
     });
   } catch (error) {
-    return NextResponse.json({
-      status: "error",
-      error: error instanceof Error ? error.message : "Unknown error",
-      environment: process.env.NODE_ENV,
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        status: "error",
+        error: error instanceof Error ? error.message : "Unknown error",
+        environment: process.env.NODE_ENV,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  // Only allow in development
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json(
+      {
+        status: "error",
+        message: "Rate limit reset is not allowed in production",
+      },
+      { status: 403 }
+    );
+  }
+
+  try {
+    const body = await request.json();
+    const { limiterType = "teamRegistration" } = body;
+
+    const resetSuccess = await resetRateLimit(limiterType, request);
+
+    if (resetSuccess) {
+      return NextResponse.json({
+        status: "success",
+        message: `Rate limit reset successfully for ${limiterType}`,
+        limiterType,
+      });
+    } else {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: "Failed to reset rate limit",
+        },
+        { status: 500 }
+      );
+    }
+  } catch (error) {
+    return NextResponse.json(
+      {
+        status: "error",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }

@@ -21,6 +21,25 @@ export default function AnimatedNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Function to track register button clicks
+  const trackClick = async (buttonType: string) => {
+    try {
+      await fetch('/api/clickTracking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          buttonType,
+          userAgent: navigator.userAgent,
+          referrer: document.referrer,
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to track click:', error);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -92,7 +111,10 @@ export default function AnimatedNavbar() {
 
         {/* Register Button */}
         <div className="hidden md:block">
-          <a href="/register">
+          <a 
+            href="/register"
+            onClick={() => trackClick('navbar_register_desktop')}
+          >
             <motion.button
               className="px-6 py-2 text-white font-bold text-base rounded-full transition-all duration-300
                             bg-[#C83DAD] shadow-lg shadow-[#C83DAD]/30
@@ -133,7 +155,10 @@ export default function AnimatedNavbar() {
                   {link.title}
                 </a>
               ))}
-              <a href="/register">
+              <a 
+                href="/register"
+                onClick={() => trackClick('navbar_register_mobile')}
+              >
                 <motion.button
                   className="px-8 py-4 text-white font-bold text-xl rounded-full transition-all duration-300 mt-8
                             bg-[#C83DAD] shadow-lg shadow-[#C83DAD]/30

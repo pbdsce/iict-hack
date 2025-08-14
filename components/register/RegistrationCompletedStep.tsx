@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle, Calendar, MapPin, Users, ExternalLink, Heart } from "lucide-react";
+import { CheckCircle, Calendar, MapPin, Users, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface RegistrationCompletedStepProps {
@@ -9,9 +9,9 @@ interface RegistrationCompletedStepProps {
 }
 
 export default function RegistrationCompletedStep({ onStartOver }: RegistrationCompletedStepProps) {
-  const handleDiscordJoin = () => {
-    window.open("https://discord.gg/your-discord-invite", "_blank");
-  };
+  // const handleDiscordJoin = () => {
+  //   window.open("https://discord.gg/your-discord-invite", "_blank");
+  // };
 
   const handleCalendarAdd = () => {
     // Create calendar event
@@ -111,7 +111,7 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
         </div>
       </motion.div>
 
-      {/* Discord & Community */}
+      {/* Discord & Community
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -146,7 +146,7 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
             <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
           </Button>
         </div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Important Instructions */}
       <motion.div

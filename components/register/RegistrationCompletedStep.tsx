@@ -209,7 +209,14 @@ export default function RegistrationCompletedStep({ onStartOver }: RegistrationC
       >
         <div className="flex items-center justify-center gap-2 text-gray-400 text-sm sm:text-base">
           <span>Built by</span>
-          <span className="font-bold text-[#C540AB]">Point Blank</span>
+          <a 
+        href="https://www.pointblank.club/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="font-bold text-[#C540AB] hover:text-[#A333A3] transition-colors duration-200"
+          >
+        Point Blank
+          </a>
           <span>with</span>
           <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500 fill-current" />
         </div>

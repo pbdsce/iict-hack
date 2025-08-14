@@ -90,28 +90,38 @@ const rateLimiterConfig = {
 };
 
 // Create production-ready rate limiters using Redis
-const createRateLimiter = (config: typeof rateLimiterConfig.general) => {
+const createRateLimiter = (
+  config: typeof rateLimiterConfig.general,
+  limiterType: string
+) => {
   if (!redisClient) {
     throw new Error("Redis client is required for rate limiting");
   }
 
   return new RateLimiterRedis({
     storeClient: redisClient,
-    keyPrefix: "iict_rl:", // Prefix to avoid key conflicts
+    keyPrefix: `iict_rl_${limiterType}:`, // Include limiter type in prefix
     ...config,
   });
 };
 
 // Initialize rate limiters
 const rateLimiters = {
-  general: createRateLimiter(rateLimiterConfig.general),
-  fileUpload: createRateLimiter(rateLimiterConfig.fileUpload),
-  teamRegistration: createRateLimiter(rateLimiterConfig.teamRegistration),
-  teamRegistrationAccess: createRateLimiter(
-    rateLimiterConfig.teamRegistrationAccess
+  general: createRateLimiter(rateLimiterConfig.general, "general"),
+  fileUpload: createRateLimiter(rateLimiterConfig.fileUpload, "fileUpload"),
+  teamRegistration: createRateLimiter(
+    rateLimiterConfig.teamRegistration,
+    "teamRegistration"
   ),
-  collegeCreation: createRateLimiter(rateLimiterConfig.collegeCreation),
-  validation: createRateLimiter(rateLimiterConfig.validation),
+  teamRegistrationAccess: createRateLimiter(
+    rateLimiterConfig.teamRegistrationAccess,
+    "teamRegistrationAccess"
+  ),
+  collegeCreation: createRateLimiter(
+    rateLimiterConfig.collegeCreation,
+    "collegeCreation"
+  ),
+  validation: createRateLimiter(rateLimiterConfig.validation, "validation"),
 };
 
 // Helper function to get client IP address - Production IP detection
@@ -356,6 +366,29 @@ export async function resetRateLimit(
     await limiter.delete(clientIP);
     console.log(
       `Rate limit reset for IP: ${clientIP}, limiter: ${limiterType}`
+    );
+    return true;
+  } catch (error) {
+    console.error("Failed to reset rate limit:", error);
+    return false;
+  }
+}
+
+// Function to reset rate limits for any specific IP (for testing only)
+export async function resetRateLimitForIP(
+  limiterType: keyof typeof rateLimiters,
+  ipAddress: string
+) {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("Rate limit reset is not allowed in production");
+  }
+
+  const limiter = rateLimiters[limiterType];
+
+  try {
+    await limiter.delete(ipAddress);
+    console.log(
+      `Rate limit reset for IP: ${ipAddress}, limiter: ${limiterType}`
     );
     return true;
   } catch (error) {

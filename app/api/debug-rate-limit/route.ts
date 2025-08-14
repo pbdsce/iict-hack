@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkRateLimit, resetRateLimit } from "@/lib/rateLimiter";
+import {
+  checkRateLimit,
+  resetRateLimit,
+  resetRateLimitForIP,
+} from "@/lib/rateLimiter";
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,15 +57,25 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { limiterType = "teamRegistration" } = body;
+    const { limiterType = "teamRegistration", ipAddress } = body;
 
-    const resetSuccess = await resetRateLimit(limiterType, request);
+    let resetSuccess;
+    if (ipAddress) {
+      // Reset for specific IP address
+      resetSuccess = await resetRateLimitForIP(limiterType, ipAddress);
+    } else {
+      // Reset for current request IP
+      resetSuccess = await resetRateLimit(limiterType, request);
+    }
 
     if (resetSuccess) {
       return NextResponse.json({
         status: "success",
-        message: `Rate limit reset successfully for ${limiterType}`,
+        message: `Rate limit reset successfully for ${limiterType}${
+          ipAddress ? ` (IP: ${ipAddress})` : ""
+        }`,
         limiterType,
+        ipAddress: ipAddress || "current request IP",
       });
     } else {
       return NextResponse.json(

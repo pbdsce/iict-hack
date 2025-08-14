@@ -62,9 +62,9 @@ const rateLimiterConfig = {
 
   // Team registration submissions only - actual form submissions
   teamRegistration: {
-    points: process.env.NODE_ENV === "development" ? 100 : 20, // Higher limit for development
+    points: 20,
     duration: 3600, // 1 hour
-    blockDuration: process.env.NODE_ENV === "development" ? 60 : 900, // 1 minute block for development
+    blockDuration: 900, // 15 minutes block
   },
 
   // Team registration page access - viewing/validating the form
@@ -329,70 +329,5 @@ export async function checkRateLimit(
       resetTime: null,
       error: "Rate limit service unavailable",
     };
-  }
-}
-
-// Emergency function to reset rate limits for a specific IP (for testing only)
-export async function resetRateLimit(
-  limiterType: keyof typeof rateLimiters,
-  request: NextRequest | Request
-) {
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("Rate limit reset is not allowed in production");
-  }
-
-  const limiter = rateLimiters[limiterType];
-
-  // Convert Request to NextRequest if needed to avoid body consumption issues
-  let clientIP: string;
-  try {
-    if (request instanceof NextRequest) {
-      clientIP = getClientIP(request);
-    } else {
-      // Create a new NextRequest without consuming the original request
-      const url = request.url || "http://localhost:3000";
-      const method = request.method || "GET";
-      const headers = new Headers();
-
-      // Copy headers without consuming the body
-      request.headers.forEach((value, key) => {
-        headers.set(key, value);
-      });
-
-      const newRequest = new NextRequest(url, { method, headers });
-      clientIP = getClientIP(newRequest);
-    }
-
-    await limiter.delete(clientIP);
-    console.log(
-      `Rate limit reset for IP: ${clientIP}, limiter: ${limiterType}`
-    );
-    return true;
-  } catch (error) {
-    console.error("Failed to reset rate limit:", error);
-    return false;
-  }
-}
-
-// Function to reset rate limits for any specific IP (for testing only)
-export async function resetRateLimitForIP(
-  limiterType: keyof typeof rateLimiters,
-  ipAddress: string
-) {
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("Rate limit reset is not allowed in production");
-  }
-
-  const limiter = rateLimiters[limiterType];
-
-  try {
-    await limiter.delete(ipAddress);
-    console.log(
-      `Rate limit reset for IP: ${ipAddress}, limiter: ${limiterType}`
-    );
-    return true;
-  } catch (error) {
-    console.error("Failed to reset rate limit:", error);
-    return false;
   }
 }

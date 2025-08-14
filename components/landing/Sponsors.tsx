@@ -7,20 +7,32 @@ type Brand = {
   name: string;
   href: string;
   logo?: string; // remote image URL
-  tier?: 'Platinum' | 'Gold' | 'Silver' | 'Bronze';
+  tier?: 'Platinum Sponsor' | 'Gold Sponsor' | 'Silver Sponsor' | 'Bronze Sponsor';
 };
 
 const sponsors: Brand[] = [
   {
     name: 'NVIDIA',
     href: 'https://www.nvidia.com/',
-    tier: 'Platinum',
+    tier: 'Platinum Sponsor',
     logo: 'https://upload.wikimedia.org/wikipedia/sco/2/21/Nvidia_logo.svg',
+  },
+  {
+    name: 'Google',
+    href: 'https://www.google.com/',
+    tier: 'Gold Sponsor',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/375px-Google_2015_logo.svg.png',
+  },
+  {
+    name: 'Qualcomm',
+    href: 'https://www.qualcomm.com/',
+    tier: 'Silver Sponsor',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Qualcomm-Logo.svg/500px-Qualcomm-Logo.svg.png',
   },
   {
     name: 'Quadric',
     href: 'https://quadric.io/',
-    tier: 'Bronze',
+    tier: 'Bronze Sponsor',
     logo: 'https://quadric.io/wp-content/uploads/2023/03/Quadric_Logo_FA_72_DPI.png',
   },
 ];
@@ -66,11 +78,11 @@ function ImageOrFallback({ brand }: { brand: Brand }) {
 }
 
 export default function SponsorsSection() {
-  const tiers: Array<'Platinum' | 'Gold' | 'Silver' | 'Bronze'> = [
-    'Platinum',
-    'Gold',
-    'Silver',
-    'Bronze',
+  const tiers: Array<'Platinum Sponsor' | 'Gold Sponsor' | 'Silver Sponsor' | 'Bronze Sponsor'> = [
+    'Platinum Sponsor',
+    'Gold Sponsor',
+    'Silver Sponsor',
+    'Bronze Sponsor',
   ];
 
   return (
